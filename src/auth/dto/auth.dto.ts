@@ -6,7 +6,7 @@ export class loginDto{
 
     @IsString()
     @IsEmail()
-    email:string
+    username:string
 
     @IsString()
     password:string 
