@@ -26,7 +26,7 @@ export class AuthService {
                 (
                     payload, 
                     {
-                        expiresIn:'1h',
+                        expiresIn:'3m',
                         secret:process.env.jwtSecretKey
                     }
                 ),
@@ -53,6 +53,32 @@ export class AuthService {
         throw new UnauthorizedException('Invalid password');
     }
 
+    async refreshToken(user:any){ 
+        const payload={
+            username:user.username, 
+            sub:user.sub
+        }
+        return {
+            backendToken:{
+                accessToken:await this.jwtService.signAsync
+                (
+                    payload, 
+                    {
+                        expiresIn:'3m',
+                        secret:process.env.jwtSecretKey
+                    }
+                ),
+                refreshToken:await this.jwtService.signAsync
+                (
+                    payload, 
+                    {
+                        expiresIn:'7d',
+                        secret:process.env.jwtRefreshTokenKey
+                    }
+                )
+            }
+        }
+
+    }
     
 }
-
