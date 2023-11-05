@@ -2,13 +2,44 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import { loginDto } from './dto/auth.dto';
 import { compare } from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-    constructor(private userService: UserService){}4
+    constructor(
+        private userService: UserService,
+        private jwtService:JwtService
+    ){}
 
     async login(dto:loginDto) {
-        const user = await this.validateUser(dto)
+        const user = await this.validateUser(dto);
+        const payload = {
+            username:user.email,
+            sub:{
+                name:user.name,
+            }
+        }
+        return {
+            user, 
+            backendToken:{
+                accessToken:await this.jwtService.signAsync
+                (
+                    payload, 
+                    {
+                        expiresIn:'1h',
+                        secret:process.env.jwtSecretKey
+                    }
+                ),
+                refreshToken:await this.jwtService.signAsync
+                (
+                    payload, 
+                    {
+                        expiresIn:'7d',
+                        secret:process.env.jwtRefreshTokenKey
+                    }
+                )
+            }
+        }
     }
 
 
@@ -21,5 +52,7 @@ export class AuthService {
         }
         throw new UnauthorizedException('Invalid password');
     }
+
+    
 }
 
