@@ -1,19 +1,21 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';// pipe de validation intégré à nest js qui fonctionne avec class-validator et class-transformer
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // using of globalPipe to trnsoform data retrieving on prisma database
+
   app.useGlobalPipes(
     new ValidationPipe({
-    whitelist:true,
-    forbidNonWhitelisted:true,
-    transform:true
-  }));
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+    }),
+  );
 
-   //intégrer un pipeline pour avoir les types correctes lorsqu'ils sont envoyés de prisma 
+  
   await app.listen(8000);
-  
-  
 }
 bootstrap();
