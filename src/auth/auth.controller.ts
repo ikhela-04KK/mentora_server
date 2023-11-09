@@ -5,7 +5,6 @@ import { loginDto } from './dto/auth.dto';
 import { AuthService } from './auth.service';
 import { refreshJwtGuard } from './guards/refresh.guards';
 
-
 @Controller('auth')
 export class AuthController {
   constructor(

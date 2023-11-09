@@ -1,0 +1,25 @@
+version: "3.7"
+
+services:
+  db:
+    build:
+      context: src/db
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 5433:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  adminer:
+    image: adminer
+    depends_on:
+      - db
+    ports:
+      - 8081:8080
+
+volumes:
+  postgres_data:

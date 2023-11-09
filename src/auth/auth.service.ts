@@ -33,7 +33,7 @@ export class AuthService {
       },
     };
   }
-  // appelé dans la fonction de login pour retourner le mot de passe 
+  // appelé dans la fonction de login pour retourner le mot de passe
   async validateUser(dto: loginDto) {
     const user = await this.userService.findByEmail(dto.username);
 

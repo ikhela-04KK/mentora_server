@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "https://kv66j8-8081.csb.app/?pgsql=db&username=postgres&db=nextauthapp&ns=public"
 }
 
 model User {
