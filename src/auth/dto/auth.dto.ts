@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 //  creation du data transfert object pour valider donné dans le signUp
 
 import { IsEmail, IsString } from 'class-validator';
