@@ -24,6 +24,7 @@ export class UserService {
     });
 
     const { password, ...result } = newUser; // extraire le password et retourne uniqumenet result.
+    console.log(`${password} succefully created`);
     return result;
   }
 
