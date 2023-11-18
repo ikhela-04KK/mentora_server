@@ -22,10 +22,15 @@ export class UserService {
         password: await hash(dto.password, 10),
       },
     });
+    // console.log(body);
+    // console.log(file.originalname);
+    // console.log(file.filename);
+    // const selectedRole = body.role;
+    // console.log(selectedRole);
 
     const { password, ...result } = newUser; // extraire le password et retourne uniqumenet result.
     console.log(`${password} succefully created`);
-    return result;
+    return { result, message: 'Data received and processed successfully' };
   }
 
   async findByEmail(email: string) {

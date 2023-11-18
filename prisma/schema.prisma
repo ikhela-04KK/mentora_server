@@ -23,4 +23,5 @@ model User {
   email String @unique
   password String
   role UserRole @default(INVITE)
+  file String
 }
