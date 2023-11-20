@@ -8,29 +8,32 @@ export class UserService {
   constructor(private prisma: PrismaService) {}
 
   async create(dto: CreateUserDto) {
-    const user = await this.prisma.user.findUnique({
-      where: {
-        email: dto.email,
-      },
-    });
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: {
+          email: dto.email,
+        },
+      });
 
-    if (user) throw new ConflictException(`email duplicated in ${dto.email}`);
+      if (user) throw new ConflictException(`email duplicated in ${dto.email}`);
 
-    const newUser = await this.prisma.user.create({
-      data: {
-        ...dto,
-        password: await hash(dto.password, 10),
-      },
-    });
-    // console.log(body);
-    // console.log(file.originalname);
-    // console.log(file.filename);
-    // const selectedRole = body.role;
-    // console.log(selectedRole);
+      const newUser = await this.prisma.user.create({
+        data: {
+          ...dto,
+          password: await hash(dto.password, 10),
+        },
+      });
+      // console.log(body);
+      // console.log(file.filename);
+      // const selectedRole = body.role;
+      // console.log(selectedRole);
 
-    const { password, ...result } = newUser; // extraire le password et retourne uniqumenet result.
-    console.log(`${password} succefully created`);
-    return { result, message: 'Data received and processed successfully' };
+      const { password, ...result } = newUser; // extraire le password et retourne uniqumenet result.
+      console.log(`${password} succefully created`);
+      return { result, message: 'Data received and processed successfully' };
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async findByEmail(email: string) {

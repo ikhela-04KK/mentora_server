@@ -35,16 +35,20 @@ export class AuthController {
   )
   @Post('register')
   async registerUser(
-    @UploadedFile() file: Express.Multer.File,
-    @Body() body: any,
-    dto: CreateUserDto,
+    @UploadedFile()
+    file: Express.Multer.File,
+    @Body() body: CreateUserDto,
   ) {
-    console.log(body);
-    console.log(file.originalname);
-    console.log(file.filename);
-    const selectedRole = body.role;
-    console.log(selectedRole);
-    return await this.userService.create(dto);
+    try {
+      console.log(body.email);
+      body['avatar'] = file.filename;
+
+      console.log(file);
+      console.log(file.filename);
+      return await this.userService.create(body);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   // @UseGuard(AuthGuard)

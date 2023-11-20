@@ -10,6 +10,7 @@ export class CreateUserDto {
   @IsString()
   name: string;
 
+  @IsString()
   @IsEmail()
   email: string;
 
@@ -20,5 +21,5 @@ export class CreateUserDto {
   role: UserRole;
 
   @IsString()
-  file: string;
+  avatar: string;
 }
