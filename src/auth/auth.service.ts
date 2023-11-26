@@ -38,6 +38,7 @@ export class AuthService {
     const user = await this.userService.findByEmail(dto.username);
 
     if (user && (await compare(dto.password, user.password))) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, ...result } = user;
       return result;
     }
@@ -61,5 +62,15 @@ export class AuthService {
         }),
       },
     };
+  }
+  async getUserFromAuthenticationToken(token: string) {
+    const payload = this.jwtService.verify(token, {
+      secret: process.env.jwtSecretKey,
+    });
+    console.log(payload);
+    const userId = payload.sub;
+    if (userId) {
+      return this.userService.findById(userId);
+    }
   }
 }

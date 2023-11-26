@@ -2,37 +2,68 @@ import {
   WebSocketGateway,
   SubscribeMessage,
   MessageBody,
+  // ConnectedSocket,
+  OnGatewayInit,
+  OnGatewayConnection,
 } from '@nestjs/websockets';
 import { ChatsService } from './chats.service';
-import { CreateChatDto } from './dto/create-chat.dto';
-import { UpdateChatDto } from './dto/update-chat.dto';
+import { Server, Socket } from 'socket.io';
+import { Logger } from '@nestjs/common';
 
-@WebSocketGateway()
-export class ChatsGateway {
+@WebSocketGateway({
+  namespace: 'chatsGateway',
+  cors: {
+    origin: [],
+  },
+})
+export class ChatsGateway implements OnGatewayInit, OnGatewayConnection {
+  server: Server;
+  private readonly logger = new Logger(ChatsGateway.name);
   constructor(private readonly chatsService: ChatsService) {}
 
-  @SubscribeMessage('createChat')
-  create(@MessageBody() createChatDto: CreateChatDto) {
-    return this.chatsService.create(createChatDto);
+  afterInit(): void {
+    this.logger.log(' WebSocket Gateway initialized for the first time');
   }
 
-  @SubscribeMessage('findAllChats')
-  findAll() {
-    return this.chatsService.findAll();
+  // implement gateway connection
+  async handleConnection(socket: Socket) {
+    await this.chatsService.getUserFromSocket(socket);
   }
 
-  @SubscribeMessage('findOneChat')
-  findOne(@MessageBody() id: number) {
-    return this.chatsService.findOne(id);
+  // test for sending message in...
+  @SubscribeMessage('send-message')
+  handleEvent(@MessageBody() message: string) {
+    // const user = this.chatsService.getUserFromSocket(socket);
+    // this.server.sockets.emit('receive_message', {
+    //   message,
+    //   user,
+    // });
+    this.logger.log(message);
+    // return message;
   }
 
-  @SubscribeMessage('updateChat')
-  update(@MessageBody() updateChatDto: UpdateChatDto) {
-    return this.chatsService.update(updateChatDto.id, updateChatDto);
-  }
+  // @SubscribeMessage('createChat')
+  // create(@MessageBody() createChatDto: CreateChatDto) {
+  //   return this.chatsService.create(createChatDto);
+  // }
 
-  @SubscribeMessage('removeChat')
-  remove(@MessageBody() id: number) {
-    return this.chatsService.remove(id);
-  }
+  // @SubscribeMessage('findAllChats')
+  // findAll() {
+  //   return this.chatsService.findAll();
+  // }
+
+  // @SubscribeMessage('findOneChat')
+  // findOne(@MessageBody() id: number) {
+  //   return this.chatsService.findOne(id);
+  // }
+
+  // @SubscribeMessage('updateChat')
+  // update(@MessageBody() updateChatDto: UpdateChatDto) {
+  //   return this.chatsService.update(updateChatDto.id, updateChatDto);
+  // }
+
+  // @SubscribeMessage('removeChat')
+  // remove(@MessageBody() id: number) {
+  //   return this.chatsService.remove(id);
+  // }
 }

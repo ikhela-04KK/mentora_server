@@ -56,7 +56,6 @@ export class AuthController {
   async login(@Body() dto: loginDto) {
     return await this.authService.login(dto);
   }
-
   @UseGuards(refreshJwtGuard)
   @Post('refresh')
   async refreshToken(@Request() req) {
