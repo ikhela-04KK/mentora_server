@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import { loginDto } from './dto/auth.dto';
 import { compare } from 'bcrypt';
@@ -6,6 +6,7 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
@@ -64,6 +65,9 @@ export class AuthService {
     };
   }
   async getUserFromAuthenticationToken(token: string) {
+    this.logger.log(
+      'Beginning the authentification with extracted bearer token',
+    );
     const payload = this.jwtService.verify(token, {
       secret: process.env.jwtSecretKey,
     });

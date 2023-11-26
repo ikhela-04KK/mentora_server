@@ -1,46 +1,55 @@
 import {
   WebSocketGateway,
-  SubscribeMessage,
-  MessageBody,
-  // ConnectedSocket,
+  // SubscribeMessage,
+  // MessageBody,
   OnGatewayInit,
   OnGatewayConnection,
+  // ConnectedSocket,
+  WebSocketServer,
 } from '@nestjs/websockets';
 import { ChatsService } from './chats.service';
-import { Server, Socket } from 'socket.io';
+import { Namespace, Server, Socket } from 'socket.io';
 import { Logger } from '@nestjs/common';
 
 @WebSocketGateway({
-  namespace: 'chatsGateway',
+  namespace: 'chats',
   cors: {
-    origin: [],
+    origin: ['*'],
   },
 })
 export class ChatsGateway implements OnGatewayInit, OnGatewayConnection {
-  server: Server;
   private readonly logger = new Logger(ChatsGateway.name);
   constructor(private readonly chatsService: ChatsService) {}
+
+  @WebSocketServer() io: Namespace;
+  server: Server;
 
   afterInit(): void {
     this.logger.log(' WebSocket Gateway initialized for the first time');
   }
 
   // implement gateway connection
-  async handleConnection(socket: Socket) {
-    await this.chatsService.getUserFromSocket(socket);
+  handleConnection(client: Socket) {
+    this.logger.log(' Succefully handle connection ');
+    this.chatsService.getUserFromSocket(client);
+    const sockets = this.io.sockets;
+    this.logger.debug(`Number of connected: ${sockets.size}`);
+    this.logger.log(`WS Client with id: ${client.id} connected`);
+    client.emit('receive_message', 'Bonjour');
+    this.io.emit('hello', 'marc');
   }
 
   // test for sending message in...
-  @SubscribeMessage('send-message')
-  handleEvent(@MessageBody() message: string) {
-    // const user = this.chatsService.getUserFromSocket(socket);
-    // this.server.sockets.emit('receive_message', {
-    //   message,
-    //   user,
-    // });
-    this.logger.log(message);
-    // return message;
-  }
+  // @SubscribeMessage('send_message')
+  // listenForMessages(
+  //   @MessageBody() data: string,
+  //   @ConnectedSocket() socket: Socket,
+  // ) {
+  //   const author = this.chatsService.getUserFromSocket(socket);
+  //   this.logger.log(`Author: ${author}, Data: ${data}`);
+  //   this.server.sockets.emit('receive_message', { author, data });
+  //   return data;
+  // }
 
   // @SubscribeMessage('createChat')
   // create(@MessageBody() createChatDto: CreateChatDto) {
