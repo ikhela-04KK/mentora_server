@@ -25,3 +25,5 @@ model User {
   role UserRole @default(INVITE)
   avatar String
 }
+
+

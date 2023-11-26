@@ -6,6 +6,9 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { PrismaService } from './prisma.service';
 import { MulterModule } from '@nestjs/platform-express';
+import { MessagesModule } from './messages/messages.module';
+import { ChatsModule } from './chats/chats.module';
+import { GroupsModule } from './groups/groups.module';
 
 @Module({
   imports: [
@@ -16,6 +19,9 @@ import { MulterModule } from '@nestjs/platform-express';
       dest: './files',
       storage: 'diskStorage',
     }),
+    MessagesModule,
+    ChatsModule,
+    GroupsModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
