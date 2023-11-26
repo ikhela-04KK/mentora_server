@@ -51,7 +51,7 @@ export class AuthController {
     }
   }
 
-  // @UseGuard(AuthGuard)
+  // @UseGuards(AuthGuard)
   @Post('login')
   async login(@Body() dto: loginDto) {
     return await this.authService.login(dto);
