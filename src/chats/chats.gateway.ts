@@ -32,11 +32,10 @@ export class ChatsGateway implements OnGatewayInit, OnGatewayConnection {
   handleConnection(client: Socket) {
     this.logger.log(' Succefully handle connection ');
     this.chatsService.getUserFromSocket(client);
-    const sockets = this.io.sockets;
-    this.logger.debug(`Number of connected: ${sockets.size}`);
-    this.logger.log(`WS Client with id: ${client.id} connected`);
-    client.emit('receive_message', 'Bonjour');
-    this.io.emit('hello', 'marc');
+    // const sockets = this.io.sockets;
+    // this.logger.debug(`Number of connected: ${sockets.size}`);
+    // this.logger.log(`WS Client with id: ${client.id} connected`);
+    // this.io.emit('hello', 'marc');
   }
 
   // test for sending message in...

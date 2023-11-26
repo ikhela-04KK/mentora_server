@@ -12,12 +12,26 @@ export class ChatsService {
 
   async getUserFromSocket(client: Socket) {
     this.logger.log('Begininng authentification');
-    let auth_token = client.handshake.headers.authorization;
-    //get the token itself without bearer
-    auth_token = auth_token.split(' ')[1];
-    const user = this.authService.getUserFromAuthenticationToken(auth_token);
-    if (!user) {
-      throw new WsException('Invalid credentials');
+
+    try {
+      let auth_token = client.handshake.headers.authorization;
+      //get the token itself without bearer
+
+      if (!auth_token) {
+        throw new WsException('Authorization token is missing');
+      }
+
+      // Get the token itself without beaer
+      auth_token = auth_token.split(' ')[1];
+
+      const user = this.authService.getUserFromAuthenticationToken(auth_token);
+      if (!user) {
+        throw new WsException('Invalid credentials');
+      }
+      return user;
+    } catch (error) {
+      this.logger.error(`Error during authentication: ${error.message}`);
+      // throw new WsException('Authentication failed');
     }
   }
 

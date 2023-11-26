@@ -72,9 +72,10 @@ export class AuthService {
       secret: process.env.jwtSecretKey,
     });
     console.log(payload);
-    const userId = payload.sub;
-    if (userId) {
-      return this.userService.findById(userId);
+    const username = payload.username;
+    if (username) {
+      this.logger.log('Succefully authorizing client conncetions');
+      return this.userService.findByEmail(username);
     }
   }
 }
