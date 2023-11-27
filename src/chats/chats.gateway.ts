@@ -6,6 +6,9 @@ import {
   OnGatewayConnection,
   // ConnectedSocket,
   WebSocketServer,
+  SubscribeMessage,
+  ConnectedSocket,
+  MessageBody,
 } from '@nestjs/websockets';
 import { ChatsService } from './chats.service';
 import { Namespace, Server, Socket } from 'socket.io';
@@ -19,6 +22,7 @@ import { Logger } from '@nestjs/common';
 })
 export class ChatsGateway implements OnGatewayInit, OnGatewayConnection {
   private readonly logger = new Logger(ChatsGateway.name);
+  connectedUsers: string[] = [];
   constructor(private readonly chatsService: ChatsService) {}
 
   @WebSocketServer() io: Namespace;
@@ -29,26 +33,34 @@ export class ChatsGateway implements OnGatewayInit, OnGatewayConnection {
   }
 
   // implement gateway connection
-  handleConnection(client: Socket) {
+  async handleConnection(client: Socket) {
     this.logger.log(' Succefully handle connection ');
-    this.chatsService.getUserFromSocket(client);
-    // const sockets = this.io.sockets;
-    // this.logger.debug(`Number of connected: ${sockets.size}`);
-    // this.logger.log(`WS Client with id: ${client.id} connected`);
-    // this.io.emit('hello', 'marc');
+    const user = await this.chatsService.getUserFromSocket(client);
+
+    this.connectedUsers = [...this.connectedUsers, String(user.email)];
+
+    const sockets = this.io.sockets;
+    this.logger.debug(`Number of connected: ${sockets.size}`);
+    this.logger.log(`WS Client with id: ${client.id} connected`);
+    this.io.emit('users', this.connectedUsers);
+
+    // Subscribe the users to their private chat room ( creer un room pour un utilisateur spécifique)
+    // this.io.socketsJoin(user.email);
   }
+  // const sockets = await io.of("/admin")
 
   // test for sending message in...
-  // @SubscribeMessage('send_message')
-  // listenForMessages(
-  //   @MessageBody() data: string,
-  //   @ConnectedSocket() socket: Socket,
-  // ) {
-  //   const author = this.chatsService.getUserFromSocket(socket);
-  //   this.logger.log(`Author: ${author}, Data: ${data}`);
-  //   this.server.sockets.emit('receive_message', { author, data });
-  //   return data;
-  // }
+  @SubscribeMessage('send_message')
+  async handleEvent(
+    @MessageBody() data: { to: string; content: string },
+    @ConnectedSocket() client: Socket,
+  ): Promise<any> {
+    const user = await this.chatsService.getUserFromSocket(client);
+    this.logger.log(`Author: ${user.email}, Data: ${data}`);
+
+    this.io.to(user.email).emit('private_message', { user, data }); // chaque utilisateur est par défaut dans le room portant son propre identifiant
+    return data;
+  }
 
   // @SubscribeMessage('createChat')
   // create(@MessageBody() createChatDto: CreateChatDto) {

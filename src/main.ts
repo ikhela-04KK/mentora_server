@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 // pipe de validation intégré à nest js qui fonctionne avec class-validator et class-transformer
 
 // pour suivre les exeption
@@ -12,6 +13,18 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
+
+  // swagger setup
+  const config = new DocumentBuilder()
+    .setTitle('API Mentorat')
+    .setDescription(
+      'This provid the REST API And WebSocket connection for chat app',
+    )
+    .setVersion('1.0')
+    .addTag('Menroats')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
   // using of globalPipe to trnsoform data retrieving on prisma database
 
