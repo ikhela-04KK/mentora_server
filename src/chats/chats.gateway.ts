@@ -29,12 +29,12 @@ export class ChatsGateway implements OnGatewayInit, OnGatewayConnection {
   server: Server;
 
   afterInit(): void {
-    this.logger.log(' WebSocket Gateway initialized for the first time');
+    this.logger.log(' WebSocket Gateway initialize for the  first time');
   }
 
   // implement gateway connection
   async handleConnection(client: Socket) {
-    this.logger.log(' Succefully handle connection ');
+    this.logger.log(' Succefully handle connectio');
     const user = await this.chatsService.getUserFromSocket(client);
 
     this.connectedUsers = [...this.connectedUsers, String(user.email)];
@@ -42,23 +42,27 @@ export class ChatsGateway implements OnGatewayInit, OnGatewayConnection {
     const sockets = this.io.sockets;
     this.logger.debug(`Number of connected: ${sockets.size}`);
     this.logger.log(`WS Client with id: ${client.id} connected`);
+    this.logger.log(`there are ${this.connectedUsers}`);
     this.io.emit('users', this.connectedUsers);
 
     // Subscribe the users to their private chat room ( creer un room pour un utilisateur spécifique)
-    // this.io.socketsJoin(user.email);
+    client.join(user.email);
   }
   // const sockets = await io.of("/admin")
 
   // test for sending message in...
   @SubscribeMessage('send_message')
   async handleEvent(
-    @MessageBody() data: { to: string; content: string },
+    @MessageBody() data: { from: string; to: string; content: string },
     @ConnectedSocket() client: Socket,
   ): Promise<any> {
     const user = await this.chatsService.getUserFromSocket(client);
-    this.logger.log(`Author: ${user.email}, Data: ${data}`);
+    this.logger.log(`Author: ${user.email}, Data: ${data.content}`);
 
-    this.io.to(user.email).emit('private_message', { user, data }); // chaque utilisateur est par défaut dans le room portant son propre identifiant
+    const content = data.content;
+    const receiver = data.to;
+    const sender = user.email;
+    this.io.to(receiver).emit('private_message', { sender, content }); // chaque utilisateur est par défaut dans le room portant son propre identifiant
     return data;
   }
 
