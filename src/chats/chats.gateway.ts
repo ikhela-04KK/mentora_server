@@ -22,7 +22,7 @@ import { Logger } from '@nestjs/common';
 })
 export class ChatsGateway implements OnGatewayInit, OnGatewayConnection {
   private readonly logger = new Logger(ChatsGateway.name);
-  connectedUsers: string[] = [];
+  connectedUsers: object[] = [];
   constructor(private readonly chatsService: ChatsService) {}
 
   @WebSocketServer() io: Namespace;
@@ -37,7 +37,14 @@ export class ChatsGateway implements OnGatewayInit, OnGatewayConnection {
     this.logger.log(' Succefully handle connectio');
     const user = await this.chatsService.getUserFromSocket(client);
 
-    this.connectedUsers = [...this.connectedUsers, String(user.email)];
+    // * todo: comment mapper sur les directement
+    this.connectedUsers = [
+      ...this.connectedUsers,
+      {
+        id: client.id,
+        email: String(user.email),
+      },
+    ];
 
     const sockets = this.io.sockets;
     this.logger.debug(`Number of connected: ${sockets.size}`);
@@ -45,24 +52,29 @@ export class ChatsGateway implements OnGatewayInit, OnGatewayConnection {
     this.logger.log(`there are ${this.connectedUsers}`);
     this.io.emit('users', this.connectedUsers);
 
-    // Subscribe the users to their private chat room ( creer un room pour un utilisateur spécifique)
-    client.join(user.email);
+    // //Subscribe the users to their private chat room ( creer un room pour un utilisateur spécifique)
+    //// client.join(user.email);
   }
   // const sockets = await io.of("/admin")
 
-  // test for sending message in...
+  // test for sending message i n...
   @SubscribeMessage('send_message')
   async handleEvent(
-    @MessageBody() data: { from: string; to: string; content: string },
+    @MessageBody() data: { to: string; content: string },
     @ConnectedSocket() client: Socket,
   ): Promise<any> {
     const user = await this.chatsService.getUserFromSocket(client);
-    this.logger.log(`Author: ${user.email}, Data: ${data.content}`);
+    const userId = client.id;
+    const userEmail = user.email;
+    this.logger.log(`${user.id} : ${userEmail}`);
+    // this.logger.log(`Author: ${user.email}, Data: ${data.content}`);
 
     const content = data.content;
     const receiver = data.to;
-    const sender = user.email;
-    this.io.to(receiver).emit('private_message', { sender, content }); // chaque utilisateur est par défaut dans le room portant son propre identifiant
+    // const sender = user.email;
+    this.io
+      .to(receiver)
+      .emit('private_message', { from: { userId, userEmail }, content }); // chaque utilisateur est par défaut dans le room portant son propre identifiant
     return data;
   }
 
