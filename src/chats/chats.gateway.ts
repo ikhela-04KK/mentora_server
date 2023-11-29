@@ -1,10 +1,7 @@
 import {
   WebSocketGateway,
-  // SubscribeMessage,
-  // MessageBody,
   OnGatewayInit,
   OnGatewayConnection,
-  // ConnectedSocket,
   WebSocketServer,
   SubscribeMessage,
   ConnectedSocket,
@@ -17,7 +14,7 @@ import { Logger } from '@nestjs/common';
 @WebSocketGateway({
   namespace: 'chats',
   cors: {
-    origin: ['*'],
+    origin: ['http://localhost:3000'],
   },
 })
 export class ChatsGateway implements OnGatewayInit, OnGatewayConnection {
@@ -34,17 +31,23 @@ export class ChatsGateway implements OnGatewayInit, OnGatewayConnection {
 
   // implement gateway connection
   async handleConnection(client: Socket) {
-    this.logger.log(' Succefully handle connectio');
-    const user = await this.chatsService.getUserFromSocket(client);
+    this.logger.log(' Succefully handle connection');
+    if (client.id) {
+      // console.log('non autorisé');
+      const user = await this.chatsService.getUserFromSocket(client);
 
-    // * todo: comment mapper sur les directement
-    this.connectedUsers = [
-      ...this.connectedUsers,
-      {
-        id: client.id,
-        email: String(user.email),
-      },
-    ];
+      // * todo: comment mapper sur les directements
+
+      this.connectedUsers = [
+        ...this.connectedUsers,
+        {
+          id: client.id,
+          email: String(user.email),
+        },
+      ];
+    } else {
+      console.log('Not Authorized');
+    }
 
     const sockets = this.io.sockets;
     this.logger.debug(`Number of connected: ${sockets.size}`);

@@ -26,10 +26,12 @@ export class ChatsService {
 
       const user = this.authService.getUserFromAuthenticationToken(auth_token);
       if (!user) {
+        client.disconnect(true);
         throw new WsException('Invalid credentials');
       }
       return user;
     } catch (error) {
+      client.disconnect(true);
       this.logger.error(`Error during authentication: ${error.message}`);
       // throw new WsException('Authentication failed');
     }

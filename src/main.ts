@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import * as cors from 'cors';
 // pipe de validation intégré à nest js qui fonctionne avec class-validator et class-transformer
 
 // pour suivre les exeption
@@ -13,7 +14,11 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
-
+  app.use(
+    cors({
+      origin: 'http://localhost:3000', // Remplacez ceci par l'URL de votre frontend
+    }),
+  );
   // swagger setup
   const config = new DocumentBuilder()
     .setTitle('API Mentorat')
@@ -36,12 +41,13 @@ async function bootstrap() {
       transform: true,
     }),
   );
+  app.use(cors());
 
   // implementer le logger pour suivre les traces de fonctionnement de son application
   const logger = new Logger('Main');
 
   // log docs
-  const url = `http://localhost:3000`;
+  const url = `http://localhost:8000`;
   logger.log(`API Document available at ${url}`);
   await app.listen(8000);
 }
