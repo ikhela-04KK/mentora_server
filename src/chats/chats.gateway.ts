@@ -32,7 +32,8 @@ export class ChatsGateway implements OnGatewayInit, OnGatewayConnection {
   // implement gateway connection
   async handleConnection(client: Socket) {
     this.logger.log(' Succefully handle connection');
-    if (client.id) {
+
+    try {
       // console.log('non autorisé');
       const user = await this.chatsService.getUserFromSocket(client);
 
@@ -45,8 +46,13 @@ export class ChatsGateway implements OnGatewayInit, OnGatewayConnection {
           email: String(user.email),
         },
       ];
-    } else {
-      console.log('Not Authorized');
+    } catch (error) {
+      this.logger.warn(`Error getting user from socket: ${error.message}`);
+      client.disconnect(true);
+      // const emailToRemove = String(user.email);
+      // this.connectedUsers = this.connectedUsers.filter(
+      //   (user) => user.email !== emailToRemove,
+      // );
     }
 
     const sockets = this.io.sockets;
