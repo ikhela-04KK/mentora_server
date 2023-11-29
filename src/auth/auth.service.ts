@@ -4,6 +4,8 @@ import { loginDto } from './dto/auth.dto';
 import { compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 
+const EXPIRE_TIME = 30 * 60 * 1000;
+
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
@@ -31,6 +33,7 @@ export class AuthService {
           expiresIn: '7d',
           secret: process.env.jwtRefreshTokenKey,
         }),
+        expiresIn: new Date().setTime(new Date().getTime() + EXPIRE_TIME), // date d'expiration +30 min à chaque que le refresh token est activé
       },
     };
   }
@@ -61,6 +64,7 @@ export class AuthService {
           expiresIn: '7d',
           secret: process.env.jwtRefreshTokenKey,
         }),
+        expiresIn: new Date().setTime(new Date().getTime() + EXPIRE_TIME),
       },
     };
   }
