@@ -49,10 +49,6 @@ export class ChatsGateway implements OnGatewayInit, OnGatewayConnection {
     } catch (error) {
       this.logger.warn(`Error getting user from socket: ${error.message}`);
       client.disconnect(true);
-      // const emailToRemove = String(user.email);
-      // this.connectedUsers = this.connectedUsers.filter(
-      //   (user) => user.email !== emailToRemove,
-      // );
     }
 
     const sockets = this.io.sockets;
@@ -61,29 +57,38 @@ export class ChatsGateway implements OnGatewayInit, OnGatewayConnection {
     this.logger.log(`there are ${this.connectedUsers}`);
     this.io.emit('users', this.connectedUsers);
 
-    // //Subscribe the users to their private chat room ( creer un room pour un utilisateur spécifique)
-    //// client.join(user.email);
+    client.join(client.id);
   }
-  // const sockets = await io.of("/admin")
-
-  // test for sending message i n...
   @SubscribeMessage('send_message')
   async handleEvent(
-    @MessageBody() data: { to: string; content: string },
+    @MessageBody()
+    data: {
+      id: string;
+      username: string;
+      to: string;
+      message: string;
+      certified: boolean;
+      location: string;
+      online: boolean;
+      source: string;
+    },
     @ConnectedSocket() client: Socket,
   ): Promise<any> {
     const user = await this.chatsService.getUserFromSocket(client);
-    const userId = client.id;
-    const userEmail = user.email;
-    this.logger.log(`${user.id} : ${userEmail}`);
-    // this.logger.log(`Author: ${user.email}, Data: ${data.content}`);
+    const id = client.id;
+    const username = user.email;
 
-    const content = data.content;
+    this.logger.log(`${id} : ${username}`);
+    const message = data.message;
     const receiver = data.to;
-    // const sender = user.email;
-    this.io
-      .to(receiver)
-      .emit('private_message', { from: { userId, userEmail }, content }); // chaque utilisateur est par défaut dans le room portant son propre identifiant
+    const certified = data.certified;
+    const location = data.location;
+    const online = data.online;
+    const source = data.source;
+    this.io.to(receiver).emit('private_message', {
+      from: { id, username, certified, location, online, source, message },
+      receiver,
+    }); // chaque utilisateur est par défaut dans le room portant son propre identifiant
     return data;
   }
 
