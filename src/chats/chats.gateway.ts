@@ -86,7 +86,13 @@ export class ChatsGateway implements OnGatewayInit, OnGatewayConnection {
     const online = data.online;
     const source = data.source;
     this.io.to(receiver).emit('private_message', {
-      from: { id, username, certified, location, online, source, message },
+      id,
+      username,
+      certified,
+      location,
+      online,
+      source,
+      message,
       receiver,
     }); // chaque utilisateur est par défaut dans le room portant son propre identifiant
     return data;
