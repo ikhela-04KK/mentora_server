@@ -1,9 +1,27 @@
 generator client {
   provider = "prisma-client-js"
 }
-generator custom_generator {
-    provider = "prisma-generator-fake-data"
-    output   = "../types/fake-data.ts"
+// generator custom_generator {
+//     provider = "prisma-generator-fake-data"
+//     // output   = "../types/fake-data.ts"
+// }
+generator nestjsDto {
+  provider                        = "prisma-generator-nestjs-dto"
+  output                          = "../src/dto/"
+  outputToNestJsResourceStructure = "true"
+  flatResourceStructure           = "false"
+  exportRelationModifierClasses   = "true"
+  reExport                        = "false"
+  createDtoPrefix                 = "Create"
+  updateDtoPrefix                 = "Update"
+  dtoSuffix                       = "Dto"
+  entityPrefix                    = ""
+  entitySuffix                    = ""
+  classValidation                 = "true"
+  fileNamingStyle                 = "camel"
+  noDependencies                  = "false"
+  outputType                      = "class"
+  prettier                        = "false"
 }
 datasource db {
   provider = "postgresql"
@@ -22,7 +40,8 @@ model User {
   createdAt DateTime  @default(now()) @db.Timestamptz(6)
   statuses  Status[]   @relation("userStatus")
   messages  Messages[] @relation("userMessages")
-  chats   ChatUser[] @relation("userChats")
+  // chats   ChatUser[] @relation("userChats")
+  chats     Chats[]
   // Define the reference to Status table
 }
 
@@ -40,7 +59,7 @@ model Status {
   disconnect_at DateTime
   user_id       Int
   // Define the reference to Users table
-  user          User     @relation("userStatus", fields: [user_id], references: [id]) // duplicate
+  user          User     @relation("userStatus", fields: [user_id], references: [id]) 
   isOnline      Boolean  @default(false)
 }
 
@@ -52,7 +71,8 @@ model Chats {
 
   // Define the reference to Messages table
   Messages Messages[] @relation("chatMessages")
-  users   ChatUser[] @relation("chatUsers")
+  // users   ChatUser[]
+  users    User[]
 }
 
 
@@ -67,13 +87,13 @@ model Messages {
   user_id      Int
   chat_id      Int
   // Define the reference to Users table
-  user         User      @relation("userMessages", fields: [user_id], references: [id]) //duplicate
+  user         User      @relation("userMessages", fields: [user_id], references: [id]) 
   chat         Chats     @relation("chatMessages", fields: [chat_id], references: [id])
 }
-model ChatUser {
-  id     Int    @id @default(autoincrement())
-  userId Int
-  chatId Int
-  user   User   @relation("userChats", fields: [userId], references: [id])
-  chat   Chats   @relation("chatUsers", fields: [chatId], references: [id])
-}
+// model ChatUser {
+//   id     Int    @id @default(autoincrement())
+//   userId Int
+//   chatId Int
+//   user   User   @relation("userChats", fields: [userId], references: [id])
+//   chat   Chats   @relation("chatUsers", fields: [chatId], references: [id])
+// }
