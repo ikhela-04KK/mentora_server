@@ -1,11 +1,15 @@
 generator client {
   provider = "prisma-client-js"
 }
-
+generator custom_generator {
+    provider = "prisma-generator-fake-data"
+    output   = "../types/fake-data.ts"
+}
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 
 model User {
   id        Int        @id @default(autoincrement())
@@ -14,9 +18,11 @@ model User {
   name      String
   role      UserRole   @default(INVITE)
   avatar    String
-  createdAt DateTime?  @default(now()) @db.Timestamptz(6)
+  location  String 
+  createdAt DateTime  @default(now()) @db.Timestamptz(6)
   statuses  Status[]   @relation("userStatus")
   messages  Messages[] @relation("userMessages")
+  chats   ChatUser[] @relation("userChats")
   // Define the reference to Status table
 }
 
@@ -35,7 +41,7 @@ model Status {
   user_id       Int
   // Define the reference to Users table
   user          User     @relation("userStatus", fields: [user_id], references: [id]) // duplicate
-  // Error validating field `user` in model `Status`: The relation field `user` on model `Status` is missing an opposite relation field on the model `User`. Either run `prisma format` or add it manually.
+  isOnline      Boolean  @default(false)
 }
 
 // Define the Chats table
@@ -46,7 +52,9 @@ model Chats {
 
   // Define the reference to Messages table
   Messages Messages[] @relation("chatMessages")
+  users   ChatUser[] @relation("chatUsers")
 }
+
 
 // Define the Messages table
 model Messages {
@@ -60,7 +68,12 @@ model Messages {
   chat_id      Int
   // Define the reference to Users table
   user         User      @relation("userMessages", fields: [user_id], references: [id]) //duplicate
-  // Error validating field `user` in model `Status`: The relation field `user` on model `Status` is missing an opposite relation field on the model `User`. Either run `prisma format` or add it manually.
-  // Define the reference to Chats table
   chat         Chats     @relation("chatMessages", fields: [chat_id], references: [id])
+}
+model ChatUser {
+  id     Int    @id @default(autoincrement())
+  userId Int
+  chatId Int
+  user   User   @relation("userChats", fields: [userId], references: [id])
+  chat   Chats   @relation("chatUsers", fields: [chatId], references: [id])
 }
