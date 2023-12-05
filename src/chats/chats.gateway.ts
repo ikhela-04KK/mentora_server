@@ -121,6 +121,11 @@ export class ChatsGateway
     }); // chaque utilisateur est par défaut dans le room portant son propre identifiant
     return data;
   }
+  @SubscribeMessage('typing')
+  handleTyping(client: Socket) {
+    client.emit('typing', client.handshake.headers.name);
+  }
+}
 
   // @SubscribeMessage('createChat')
   // create(@MessageBody() createChatDto: CreateChatDto) {
