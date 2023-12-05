@@ -5,8 +5,12 @@ import { AuthService } from 'src/auth/auth.service';
 import { UserService } from 'src/user/user.service';
 import { PrismaService } from 'src/prisma.service';
 import { JwtService } from '@nestjs/jwt';
+import { chatsController } from './chats.controller';
 
 @Module({
+  import:[messageModules],
+  controllers: [chatsController],
+  exports: [ChatsService],
   providers: [
     ChatsGateway,
     ChatsService,

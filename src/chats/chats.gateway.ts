@@ -2,6 +2,7 @@ import {
   WebSocketGateway,
   OnGatewayInit,
   OnGatewayConnection,
+  OnGatewayDisconnect,
   WebSocketServer,
   SubscribeMessage,
   ConnectedSocket,
@@ -17,13 +18,15 @@ import { Logger } from '@nestjs/common';
     origin: ['http://localhost:3000'],
   },
 })
-export class ChatsGateway implements OnGatewayInit, OnGatewayConnection {
+export class ChatsGateway
+  implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
+{
   private readonly logger = new Logger(ChatsGateway.name);
-  connectedUsers: object[] = [];
   constructor(private readonly chatsService: ChatsService) {}
 
   @WebSocketServer() io: Namespace;
   server: Server;
+  connectedUsers: string[] = [];
 
   afterInit(): void {
     this.logger.log(' WebSocket Gateway initialize for the  first time');
@@ -39,13 +42,16 @@ export class ChatsGateway implements OnGatewayInit, OnGatewayConnection {
 
       // * todo: comment mapper sur les directements
 
-      this.connectedUsers = [
-        ...this.connectedUsers,
-        {
-          id: client.id,
-          email: String(user.email),
-        },
-      ];
+      // this.connectedUsers = [
+      //   ...this.connectedUsers,
+      //   {
+      //     id: client.id,
+      //     email: String(user.email),
+      //   },
+      // ];
+      this.connectedUsers = [...this.connectedUsers, String(user.id)];
+      // Send list of connected users
+      this.server.emit('users', this.connectedUsers);
     } catch (error) {
       this.logger.warn(`Error getting user from socket: ${error.message}`);
       client.disconnect(true);
@@ -59,6 +65,24 @@ export class ChatsGateway implements OnGatewayInit, OnGatewayConnection {
 
     client.join(client.id);
   }
+
+  async handleDisconnect(client: Socket) {
+    try {
+      const user = await this.chatsService.getUserFromSocket(client);
+      const userPos = this.connectedUsers.indexOf(String(user.id));
+      this.connectedUsers = this.connectedUsers.slice(0, userPos);
+
+      //recupérer les ids après les ids de l'utilisateur si l'utilsateur se trouve entre par exemple {  1, 2,3}
+      this.connectedUsers = this.connectedUsers.slice(userPos + 1);
+
+      // Sends the new list of connected users
+      this.server.emit('users', this.connectedUsers);
+    } catch (error) {
+      this.logger.warn(`Error getting user from socket: ${error.message}`);
+      client.disconnect(true);
+    }
+  }
+
   @SubscribeMessage('send_message')
   async handleEvent(
     @MessageBody()

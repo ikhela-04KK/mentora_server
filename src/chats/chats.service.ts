@@ -10,6 +10,73 @@ export class ChatsService {
   private readonly logger = new Logger(ChatsService.name);
   constructor(private authService: AuthService) {}
 
+  async getChats(id:number){
+    try{
+      
+    }
+    catch{
+      return {
+        statusCode:'404', 
+        message:'Channel not found.'
+      }
+    }
+  }
+
+  async getChatsByUserId(id:number){
+    try {
+      
+    } catch (error) {
+      return {
+        statusCode: '404',
+        message: 'User or channel not found.'
+      };
+    }
+  }
+  async createChat(){ //put the dto here
+    try {
+      return {
+        statusCode: '201',
+        message: 'Channel create successfully.'
+      };
+
+    } catch (error) {
+      return {
+        statusCode: '400',
+        message: error,
+      };
+    }
+  }
+  async updateChat(){
+    try {
+      return {
+        statusCode: '200',
+        message: 'Chat updated successfully.'
+      };
+
+    } catch (error) {
+      return {
+        statusCode: '404',
+        message: 'chat not found.'
+      };
+    }
+  }
+  async deleteChat(){
+    try {
+      return {
+        statusCode: '200',
+        message: 'Chat deleted successfully.'
+      };
+
+    } catch (error) {
+      return {
+        statusCode: '404',
+        message: 'chat not found.'
+      };
+
+    }
+  }
+  
+
   async getUserFromSocket(client: Socket) {
     this.logger.log('Begininng authentification');
 
