@@ -1,15 +1,7 @@
-import {
-  Body,
-  Controller,
-  Controller,
-  Get,
-  Param,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
-import { Delete, Put } from '@nestjs/common';
+/* eslint-disable prettier/prettier */
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+// import { Delete, Put } from '@nestjs/common';
 import { ChatsService } from './chats.service';
-import { ChatsDto } from 'src/dto/chats/dto/chats.dto';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { CreateChatsDto } from 'src/dto/chats/dto/create-chats.dto';
 
@@ -17,15 +9,9 @@ import { CreateChatsDto } from 'src/dto/chats/dto/create-chats.dto';
 export class chatsController {
   constructor(private chatsService: ChatsService) {}
 
-  @Get(':id')
-  async getChats(@Param('id') id: number) {
-    const chat = await this.chatsService.getChats(id);
-    return chat;
-  }
-
-  @Get('user/:userid')
+  @Get('user/:id')
   async getChatsByUserId(@Param('id') id: number) {
-    const chats = await this.chatsService.getChatsByUser(id);
+    const chats = await this.chatsService.getChatsByUserId(id);
     return chats;
   }
 
@@ -33,19 +19,6 @@ export class chatsController {
   @Post('')
   async createChat(@Body() body: CreateChatsDto) {
     const result = await this.chatsService.createChat(body);
-    return result;
-  }
-
-  @UseGuards(JwtGuard)
-  @Put(':id')
-  async updateChat(@Param(':id') id: string, @Body() body) {
-    const result = await this.chatsService.updateChat(); //{id, chat:body}
-    return result;
-  }
-  @UseGuards(JwtGuard)
-  @Delete(':id')
-  async deleteChat(@Param(':id') id: string) {
-    const result = await this.chatsService.deleteChat(id);
     return result;
   }
 }

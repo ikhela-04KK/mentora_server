@@ -1,81 +1,143 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { ConflictException, Injectable, Logger } from '@nestjs/common';
 import { WsException } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
 import { AuthService } from 'src/auth/auth.service';
-// import { CreateChatDto } from './dto/create-chat.dto';
-// import { UpdateChatDto } from './dto/update-chat.dto';
+import { CreateChatsDto } from 'src/dto/chats/dto/create-chats.dto';
+import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class ChatsService {
   private readonly logger = new Logger(ChatsService.name);
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private prisma: PrismaService,
+  ) {}
 
-  async getChats(id:number){
-    try{
-      
-    }
-    catch{
-      return {
-        statusCode:'404', 
-        message:'Channel not found.'
-      }
-    }
-  }
+  // *
+  // async getChats(id:number){
+  //   try{
+  //   }
+  //   catch{
+  //     return {
+  //       statusCode:'404',
+  //       message: 'Chat n`existe pas.',
+  //     }
+  //   }
+  // }
 
-  async getChatsByUserId(id:number){
+  async getChatsByUserId(id: number) {
     try {
-      
+      const chats = await this.prisma.chats.findMany({
+        where: {
+          users: {
+            some: {
+              id: id,
+            },
+          },
+        },
+        orderBy: { created_at: 'desc' },
+        select: {
+          id: true,
+          users: {
+            select: {
+              id: true,
+              name: true,
+              avatar: true,
+              location: true,
+              role: true,
+            },
+          },
+        },
+      });
+      console.log(chats);
+
+      const lastMessagePromise = chats.map(async (chat) => {
+        return this.prisma.messages.findMany({
+          where: {
+            chat_id: chat.id,
+            NOT: {
+              user_id: id,
+            },
+          },
+          orderBy: { created_at: 'desc' },
+        });
+      });
+
+      const lastMessages = await Promise.all(lastMessagePromise);
+
+      return {
+        lastMessages,
+        chats,
+      };
     } catch (error) {
       return {
         statusCode: '404',
-        message: 'User or channel not found.'
+        message: 'Utilisateur ou chat introuvable.',
       };
     }
   }
-  async createChat(){ //put the dto here
-    try {
-      return {
-        statusCode: '201',
-        message: 'Channel create successfully.'
-      };
 
+  async createChat(dto: CreateChatsDto) {
+    //put the dto here
+    try {
+      const chat = await this.prisma.chats.findUnique({
+        where: {
+          id: dto.id,
+          name: dto.name,
+        },
+      });
+      if (chat) throw new ConflictException(`chat duplicated in ${dto.name}`);
+
+      const newChat = await this.prisma.chats.create({
+        data: {
+          ...dto,
+        },
+      });
+      const { name } = newChat;
+      this.logger.log(`Chat avec le nom ${name} a été créer`);
+
+      return {
+        data: newChat,
+        statusCode: '201',
+        message: 'Chat crée avec succès.',
+      };
     } catch (error) {
+      this.logger.error(error);
       return {
         statusCode: '400',
         message: error,
       };
     }
   }
-  async updateChat(){
-    try {
-      return {
-        statusCode: '200',
-        message: 'Chat updated successfully.'
-      };
+  // async updateChat(){
+  //   try {
+  //     return {
+  //       statusCode: '200',
+  //       message: 'Chat updated successfully.'
+  //     };
 
-    } catch (error) {
-      return {
-        statusCode: '404',
-        message: 'chat not found.'
-      };
-    }
-  }
-  async deleteChat(){
-    try {
-      return {
-        statusCode: '200',
-        message: 'Chat deleted successfully.'
-      };
+  //   } catch (error) {
+  //     return {
+  //       statusCode: '404',
+  //       message: 'chat not found.'
+  //     };
+  //   }
+  // }
+  // async deleteChat(){
+  //   try {
+  //     return {
+  //       statusCode: '200',
+  //       message: 'Chat deleted successfully.'
+  //     };
 
-    } catch (error) {
-      return {
-        statusCode: '404',
-        message: 'chat not found.'
-      };
+  //   } catch (error) {
+  //     return {
+  //       statusCode: '404',
+  //       message: 'chat not found.'
+  //     };
 
-    }
-  }
-  
+  //   }
+  // }
 
   async getUserFromSocket(client: Socket) {
     this.logger.log('Begininng authentification');

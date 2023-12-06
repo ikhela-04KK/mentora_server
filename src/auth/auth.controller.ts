@@ -28,7 +28,7 @@ export class AuthController {
     FileInterceptor('file', {
       storage: diskStorage({
         destination:
-          'C:\\Users\\Administrateur\\Documents\\mentorat\\mentora-front\\mentorat_front\\public',
+          'C:\\Users\\Administrateur\\Documents\\mentorat\\mentorat_front\\public',
         filename: editFilname,
       }),
       fileFilter: imageFileFilter,

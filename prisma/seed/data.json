@@ -49,3 +49,587 @@
         ]
     }
 ]
+
+[
+    {
+        "id": 3,
+        "name": "Kelli Friesen",
+        "created_at": "2023-12-04T14:52:04.960Z",
+        "users": [
+            {
+                "id": 3,
+                "email": "Nat_Koss@hotmail.com",
+                "password": "deporto vicinus suppono curis bellicus",
+                "name": "Ramona Halvorson",
+                "role": "TEACHER",
+                "avatar": "https://avatars.githubusercontent.com/u/14761871",
+                "location": "New Darrenton",
+                "createdAt": "2023-12-04T13:16:13.403Z"
+            },
+            {
+                "id": 5,
+                "email": "Adella.Schmidt37@yahoo.com",
+                "password": "sui armarium denuncio antea ustulo",
+                "name": "Van Bartoletti",
+                "role": "STUDENT",
+                "avatar": "https://avatars.githubusercontent.com/u/5818041",
+                "location": "New Kaitlynview",
+                "createdAt": "2023-12-04T13:44:02.757Z"
+            }
+        ],
+        "Messages": [
+            {
+                "id": 5,
+                "content": "tollo suppono iste tardus facere",
+                "seen_at": null,
+                "delivered_at": null,
+                "created_at": "2023-12-04T14:52:05.035Z",
+                "updated_at": "2023-12-04T14:52:05.035Z",
+                "user_id": 3,
+                "chat_id": 3
+            },
+            {
+                "id": 6,
+                "content": "celebrer tantum triumphus degero cras",
+                "seen_at": null,
+                "delivered_at": null,
+                "created_at": "2023-12-04T14:52:05.041Z",
+                "updated_at": "2023-12-04T14:52:05.041Z",
+                "user_id": 5,
+                "chat_id": 3
+            },
+            {
+                "id": 9,
+                "content": "venustas vorago coma aurum crux",
+                "seen_at": null,
+                "delivered_at": null,
+                "created_at": "2023-12-05T20:42:40.474Z",
+                "updated_at": "2023-12-05T20:42:40.474Z",
+                "user_id": 3,
+                "chat_id": 3
+            },
+            {
+                "id": 10,
+                "content": "chirographum tot corporis similique debitis",
+                "seen_at": null,
+                "delivered_at": null,
+                "created_at": "2023-12-05T20:42:41.913Z",
+                "updated_at": "2023-12-05T20:42:41.913Z",
+                "user_id": 5,
+                "chat_id": 3
+            },
+            {
+                "id": 11,
+                "content": "eum desino admitto adversus defendo",
+                "seen_at": null,
+                "delivered_at": null,
+                "created_at": "2023-12-05T20:44:40.402Z",
+                "updated_at": "2023-12-05T20:44:40.402Z",
+                "user_id": 3,
+                "chat_id": 3
+            },
+            {
+                "id": 12,
+                "content": "quas clementia trado subseco sumptus",
+                "seen_at": null,
+                "delivered_at": null,
+                "created_at": "2023-12-05T20:44:40.411Z",
+                "updated_at": "2023-12-05T20:44:40.411Z",
+                "user_id": 5,
+                "chat_id": 3
+            }
+        ]
+    }
+]
+
+[
+    {
+        "id": 5,
+        "name": "Ellen Wiegand",
+        "created_at": "2023-12-05T20:52:18.820Z",
+        "users": [
+            {
+                "id": 3,
+                "email": "Nat_Koss@hotmail.com",
+                "password": "deporto vicinus suppono curis bellicus",
+                "name": "Ramona Halvorson",
+                "role": "TEACHER",
+                "avatar": "https://avatars.githubusercontent.com/u/14761871",
+                "location": "New Darrenton",
+                "createdAt": "2023-12-04T13:16:13.403Z"
+            },
+            {
+                "id": 4,
+                "email": "Jordan.Klocko35@gmail.com",
+                "password": "coniecto ager despecto commodo commodi",
+                "name": "Dr. Dwight Feest-Leffler",
+                "role": "STUDENT",
+                "avatar": "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/239.jpg",
+                "location": "West Royce",
+                "createdAt": "2023-12-04T13:16:41.891Z"
+            }
+        ],
+        "Messages": [
+            {
+                "id": 13,
+                "content": "quod toties alius ustilo stabilis",
+                "seen_at": null,
+                "delivered_at": null,
+                "created_at": "2023-12-05T20:52:21.995Z",
+                "updated_at": "2023-12-05T20:52:21.995Z",
+                "user_id": 3,
+                "chat_id": 5
+            },
+            {
+                "id": 14,
+                "content": "ipsam damno adfectus aer balbus",
+                "seen_at": null,
+                "delivered_at": null,
+                "created_at": "2023-12-05T20:52:22.003Z",
+                "updated_at": "2023-12-05T20:52:22.003Z",
+                "user_id": 4,
+                "chat_id": 5
+            }
+        ]
+    }
+]
+
+[
+    {
+        "id": 2,
+        "content": "Bonjour mon petit Van Bartoletti",
+        "seen_at": null,
+        "delivered_at": null,
+        "created_at": "2023-12-04T14:50:43.597Z",
+        "updated_at": "2023-12-04T14:50:43.597Z",
+        "user_id": 5,
+        "chat_id": 1,
+        "user": {
+            "id": 5,
+            "email": "Adella.Schmidt37@yahoo.com",
+            "password": "sui armarium denuncio antea ustulo",
+            "name": "Van Bartoletti",
+            "role": "STUDENT",
+            "avatar": "https://avatars.githubusercontent.com/u/5818041",
+            "location": "New Kaitlynview",
+            "createdAt": "2023-12-04T13:44:02.757Z"
+        },
+        "chat": {
+            "id": 1,
+            "name": "Carol Thompson",
+            "created_at": "2023-12-04T14:50:43.169Z"
+        }
+    }
+]
+
+[
+    {
+        "id": 3,
+        "email": "Nat_Koss@hotmail.com",
+        "password": "deporto vicinus suppono curis bellicus",
+        "name": "Ramona Halvorson",
+        "role": "TEACHER",
+        "avatar": "https://avatars.githubusercontent.com/u/14761871",
+        "location": "New Darrenton",
+        "createdAt": "2023-12-04T13:16:13.403Z",
+        "messages": [
+            {
+                "id": 1,
+                "content": "Bonjour Mr & Doctor Ramona ",
+                "seen_at": null,
+                "delivered_at": null,
+                "created_at": "2023-12-04T14:50:43.589Z",
+                "updated_at": "2023-12-04T14:50:43.589Z",
+                "user_id": 3,
+                "chat_id": 1
+            },
+            {
+                "id": 3,
+                "content": "coaegresco quo aegrotatio aetas aetas",
+                "seen_at": null,
+                "delivered_at": null,
+                "created_at": "2023-12-04T14:51:59.739Z",
+                "updated_at": "2023-12-04T14:51:59.739Z",
+                "user_id": 3,
+                "chat_id": 2
+            },
+            {
+                "id": 5,
+                "content": "tollo suppono iste tardus facere",
+                "seen_at": null,
+                "delivered_at": null,
+                "created_at": "2023-12-04T14:52:05.035Z",
+                "updated_at": "2023-12-04T14:52:05.035Z",
+                "user_id": 3,
+                "chat_id": 3
+            },
+            {
+                "id": 7,
+                "content": "cumque vestigium delibero sto pecus",
+                "seen_at": null,
+                "delivered_at": null,
+                "created_at": "2023-12-04T14:52:10.511Z",
+                "updated_at": "2023-12-04T14:52:10.511Z",
+                "user_id": 3,
+                "chat_id": 4
+            },
+            {
+                "id": 9,
+                "content": "venustas vorago coma aurum crux",
+                "seen_at": null,
+                "delivered_at": null,
+                "created_at": "2023-12-05T20:42:40.474Z",
+                "updated_at": "2023-12-05T20:42:40.474Z",
+                "user_id": 3,
+                "chat_id": 3
+            },
+            {
+                "id": 11,
+                "content": "eum desino admitto adversus defendo",
+                "seen_at": null,
+                "delivered_at": null,
+                "created_at": "2023-12-05T20:44:40.402Z",
+                "updated_at": "2023-12-05T20:44:40.402Z",
+                "user_id": 3,
+                "chat_id": 3
+            },
+            {
+                "id": 13,
+                "content": "quod toties alius ustilo stabilis",
+                "seen_at": null,
+                "delivered_at": null,
+                "created_at": "2023-12-05T20:52:21.995Z",
+                "updated_at": "2023-12-05T20:52:21.995Z",
+                "user_id": 3,
+                "chat_id": 5
+            }
+        ],
+        "chats": [
+            {
+                "id": 1,
+                "name": "Carol Thompson",
+                "created_at": "2023-12-04T14:50:43.169Z"
+            },
+            {
+                "id": 2,
+                "name": "Neal Rodriguez",
+                "created_at": "2023-12-04T14:51:59.663Z"
+            },
+            {
+                "id": 3,
+                "name": "Kelli Friesen",
+                "created_at": "2023-12-04T14:52:04.960Z"
+            },
+            {
+                "id": 4,
+                "name": "Leroy Boyer MD",
+                "created_at": "2023-12-04T14:52:10.442Z"
+            },
+            {
+                "id": 5,
+                "name": "Ellen Wiegand",
+                "created_at": "2023-12-05T20:52:18.820Z"
+            }
+        ]
+    }
+]
+
+[
+    {
+        "id": 3,
+        "email": "Nat_Koss@hotmail.com",
+        "password": "deporto vicinus suppono curis bellicus",
+        "name": "Ramona Halvorson",
+        "role": "TEACHER",
+        "avatar": "https://avatars.githubusercontent.com/u/14761871",
+        "location": "New Darrenton",
+        "createdAt": "2023-12-04T13:16:13.403Z",
+        "chats": [
+            {
+                "id": 1,
+                "name": "Carol Thompson",
+                "created_at": "2023-12-04T14:50:43.169Z",
+                "users": [
+                    {
+                        "id": 3,
+                        "email": "Nat_Koss@hotmail.com",
+                        "password": "deporto vicinus suppono curis bellicus",
+                        "name": "Ramona Halvorson",
+                        "role": "TEACHER",
+                        "avatar": "https://avatars.githubusercontent.com/u/14761871",
+                        "location": "New Darrenton",
+                        "createdAt": "2023-12-04T13:16:13.403Z"
+                    },
+                    {
+                        "id": 5,
+                        "email": "Adella.Schmidt37@yahoo.com",
+                        "password": "sui armarium denuncio antea ustulo",
+                        "name": "Van Bartoletti",
+                        "role": "STUDENT",
+                        "avatar": "https://avatars.githubusercontent.com/u/5818041",
+                        "location": "New Kaitlynview",
+                        "createdAt": "2023-12-04T13:44:02.757Z"
+                    }
+                ],
+                "Messages": [
+                    {
+                        "id": 1,
+                        "content": "Bonjour Mr & Doctor Ramona ",
+                        "seen_at": null,
+                        "delivered_at": null,
+                        "created_at": "2023-12-04T14:50:43.589Z",
+                        "updated_at": "2023-12-04T14:50:43.589Z",
+                        "user_id": 3,
+                        "chat_id": 1
+                    },
+                    {
+                        "id": 2,
+                        "content": "Bonjour mon petit Van Bartoletti",
+                        "seen_at": null,
+                        "delivered_at": null,
+                        "created_at": "2023-12-04T14:50:43.597Z",
+                        "updated_at": "2023-12-04T14:50:43.597Z",
+                        "user_id": 5,
+                        "chat_id": 1
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "name": "Neal Rodriguez",
+                "created_at": "2023-12-04T14:51:59.663Z",
+                "users": [
+                    {
+                        "id": 3,
+                        "email": "Nat_Koss@hotmail.com",
+                        "password": "deporto vicinus suppono curis bellicus",
+                        "name": "Ramona Halvorson",
+                        "role": "TEACHER",
+                        "avatar": "https://avatars.githubusercontent.com/u/14761871",
+                        "location": "New Darrenton",
+                        "createdAt": "2023-12-04T13:16:13.403Z"
+                    },
+                    {
+                        "id": 5,
+                        "email": "Adella.Schmidt37@yahoo.com",
+                        "password": "sui armarium denuncio antea ustulo",
+                        "name": "Van Bartoletti",
+                        "role": "STUDENT",
+                        "avatar": "https://avatars.githubusercontent.com/u/5818041",
+                        "location": "New Kaitlynview",
+                        "createdAt": "2023-12-04T13:44:02.757Z"
+                    }
+                ],
+                "Messages": [
+                    {
+                        "id": 3,
+                        "content": "coaegresco quo aegrotatio aetas aetas",
+                        "seen_at": null,
+                        "delivered_at": null,
+                        "created_at": "2023-12-04T14:51:59.739Z",
+                        "updated_at": "2023-12-04T14:51:59.739Z",
+                        "user_id": 3,
+                        "chat_id": 2
+                    },
+                    {
+                        "id": 4,
+                        "content": "titulus tergeo sed acceptus solus",
+                        "seen_at": null,
+                        "delivered_at": null,
+                        "created_at": "2023-12-04T14:51:59.745Z",
+                        "updated_at": "2023-12-04T14:51:59.745Z",
+                        "user_id": 5,
+                        "chat_id": 2
+                    }
+                ]
+            },
+            {
+                "id": 3,
+                "name": "Kelli Friesen",
+                "created_at": "2023-12-04T14:52:04.960Z",
+                "users": [
+                    {
+                        "id": 3,
+                        "email": "Nat_Koss@hotmail.com",
+                        "password": "deporto vicinus suppono curis bellicus",
+                        "name": "Ramona Halvorson",
+                        "role": "TEACHER",
+                        "avatar": "https://avatars.githubusercontent.com/u/14761871",
+                        "location": "New Darrenton",
+                        "createdAt": "2023-12-04T13:16:13.403Z"
+                    },
+                    {
+                        "id": 5,
+                        "email": "Adella.Schmidt37@yahoo.com",
+                        "password": "sui armarium denuncio antea ustulo",
+                        "name": "Van Bartoletti",
+                        "role": "STUDENT",
+                        "avatar": "https://avatars.githubusercontent.com/u/5818041",
+                        "location": "New Kaitlynview",
+                        "createdAt": "2023-12-04T13:44:02.757Z"
+                    }
+                ],
+                "Messages": [
+                    {
+                        "id": 5,
+                        "content": "tollo suppono iste tardus facere",
+                        "seen_at": null,
+                        "delivered_at": null,
+                        "created_at": "2023-12-04T14:52:05.035Z",
+                        "updated_at": "2023-12-04T14:52:05.035Z",
+                        "user_id": 3,
+                        "chat_id": 3
+                    },
+                    {
+                        "id": 6,
+                        "content": "celebrer tantum triumphus degero cras",
+                        "seen_at": null,
+                        "delivered_at": null,
+                        "created_at": "2023-12-04T14:52:05.041Z",
+                        "updated_at": "2023-12-04T14:52:05.041Z",
+                        "user_id": 5,
+                        "chat_id": 3
+                    },
+                    {
+                        "id": 9,
+                        "content": "venustas vorago coma aurum crux",
+                        "seen_at": null,
+                        "delivered_at": null,
+                        "created_at": "2023-12-05T20:42:40.474Z",
+                        "updated_at": "2023-12-05T20:42:40.474Z",
+                        "user_id": 3,
+                        "chat_id": 3
+                    },
+                    {
+                        "id": 10,
+                        "content": "chirographum tot corporis similique debitis",
+                        "seen_at": null,
+                        "delivered_at": null,
+                        "created_at": "2023-12-05T20:42:41.913Z",
+                        "updated_at": "2023-12-05T20:42:41.913Z",
+                        "user_id": 5,
+                        "chat_id": 3
+                    },
+                    {
+                        "id": 11,
+                        "content": "eum desino admitto adversus defendo",
+                        "seen_at": null,
+                        "delivered_at": null,
+                        "created_at": "2023-12-05T20:44:40.402Z",
+                        "updated_at": "2023-12-05T20:44:40.402Z",
+                        "user_id": 3,
+                        "chat_id": 3
+                    },
+                    {
+                        "id": 12,
+                        "content": "quas clementia trado subseco sumptus",
+                        "seen_at": null,
+                        "delivered_at": null,
+                        "created_at": "2023-12-05T20:44:40.411Z",
+                        "updated_at": "2023-12-05T20:44:40.411Z",
+                        "user_id": 5,
+                        "chat_id": 3
+                    }
+                ]
+            },
+            {
+                "id": 4,
+                "name": "Leroy Boyer MD",
+                "created_at": "2023-12-04T14:52:10.442Z",
+                "users": [
+                    {
+                        "id": 3,
+                        "email": "Nat_Koss@hotmail.com",
+                        "password": "deporto vicinus suppono curis bellicus",
+                        "name": "Ramona Halvorson",
+                        "role": "TEACHER",
+                        "avatar": "https://avatars.githubusercontent.com/u/14761871",
+                        "location": "New Darrenton",
+                        "createdAt": "2023-12-04T13:16:13.403Z"
+                    },
+                    {
+                        "id": 5,
+                        "email": "Adella.Schmidt37@yahoo.com",
+                        "password": "sui armarium denuncio antea ustulo",
+                        "name": "Van Bartoletti",
+                        "role": "STUDENT",
+                        "avatar": "https://avatars.githubusercontent.com/u/5818041",
+                        "location": "New Kaitlynview",
+                        "createdAt": "2023-12-04T13:44:02.757Z"
+                    }
+                ],
+                "Messages": [
+                    {
+                        "id": 7,
+                        "content": "cumque vestigium delibero sto pecus",
+                        "seen_at": null,
+                        "delivered_at": null,
+                        "created_at": "2023-12-04T14:52:10.511Z",
+                        "updated_at": "2023-12-04T14:52:10.511Z",
+                        "user_id": 3,
+                        "chat_id": 4
+                    },
+                    {
+                        "id": 8,
+                        "content": "sapiente stipes acerbitas curatio nesciunt",
+                        "seen_at": null,
+                        "delivered_at": null,
+                        "created_at": "2023-12-04T14:52:10.517Z",
+                        "updated_at": "2023-12-04T14:52:10.517Z",
+                        "user_id": 5,
+                        "chat_id": 4
+                    }
+                ]
+            },
+            {
+                "id": 5,
+                "name": "Ellen Wiegand",
+                "created_at": "2023-12-05T20:52:18.820Z",
+                "users": [
+                    {
+                        "id": 3,
+                        "email": "Nat_Koss@hotmail.com",
+                        "password": "deporto vicinus suppono curis bellicus",
+                        "name": "Ramona Halvorson",
+                        "role": "TEACHER",
+                        "avatar": "https://avatars.githubusercontent.com/u/14761871",
+                        "location": "New Darrenton",
+                        "createdAt": "2023-12-04T13:16:13.403Z"
+                    },
+                    {
+                        "id": 4,
+                        "email": "Jordan.Klocko35@gmail.com",
+                        "password": "coniecto ager despecto commodo commodi",
+                        "name": "Dr. Dwight Feest-Leffler",
+                        "role": "STUDENT",
+                        "avatar": "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/239.jpg",
+                        "location": "West Royce",
+                        "createdAt": "2023-12-04T13:16:41.891Z"
+                    }
+                ],
+                "Messages": [
+                    {
+                        "id": 13,
+                        "content": "quod toties alius ustilo stabilis",
+                        "seen_at": null,
+                        "delivered_at": null,
+                        "created_at": "2023-12-05T20:52:21.995Z",
+                        "updated_at": "2023-12-05T20:52:21.995Z",
+                        "user_id": 3,
+                        "chat_id": 5
+                    },
+                    {
+                        "id": 14,
+                        "content": "ipsam damno adfectus aer balbus",
+                        "seen_at": null,
+                        "delivered_at": null,
+                        "created_at": "2023-12-05T20:52:22.003Z",
+                        "updated_at": "2023-12-05T20:52:22.003Z",
+                        "user_id": 4,
+                        "chat_id": 5
+                    }
+                ]
+            }
+        ]
+    }
+]

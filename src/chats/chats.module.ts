@@ -8,7 +8,6 @@ import { JwtService } from '@nestjs/jwt';
 import { chatsController } from './chats.controller';
 
 @Module({
-  import:[messageModules],
   controllers: [chatsController],
   exports: [ChatsService],
   providers: [

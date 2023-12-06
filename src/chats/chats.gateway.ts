@@ -1,6 +1,5 @@
 import {
   WebSocketGateway,
-  OnGatewayInit,
   OnGatewayConnection,
   OnGatewayDisconnect,
   WebSocketServer,
@@ -11,6 +10,7 @@ import {
 import { ChatsService } from './chats.service';
 import { Namespace, Server, Socket } from 'socket.io';
 import { Logger } from '@nestjs/common';
+import { CreateChatsDto } from 'src/dto/chats/dto/create-chats.dto';
 
 @WebSocketGateway({
   namespace: 'chats',
@@ -18,9 +18,7 @@ import { Logger } from '@nestjs/common';
     origin: ['http://localhost:3000'],
   },
 })
-export class ChatsGateway
-  implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
-{
+export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private readonly logger = new Logger(ChatsGateway.name);
   constructor(private readonly chatsService: ChatsService) {}
 
@@ -28,16 +26,14 @@ export class ChatsGateway
   server: Server;
   connectedUsers: string[] = [];
 
-  afterInit(): void {
-    this.logger.log(' WebSocket Gateway initialize for the  first time');
-  }
+  // afterInit(): void {
+  //   this.logger.log(' WebSocket Gateway initialize for the  first time');
+  // }
 
-  // implement gateway connection
   async handleConnection(client: Socket) {
     this.logger.log(' Succefully handle connection');
 
     try {
-      // console.log('non autorisé');
       const user = await this.chatsService.getUserFromSocket(client);
 
       // * todo: comment mapper sur les directements
@@ -50,20 +46,15 @@ export class ChatsGateway
       //   },
       // ];
       this.connectedUsers = [...this.connectedUsers, String(user.id)];
-      // Send list of connected users
-      this.server.emit('users', this.connectedUsers);
+      const sockets = this.io.sockets;
+      this.logger.debug(`Number of connected: ${sockets.size}`);
+      this.logger.log(`WS Client with id: ${client.id} connected`);
+      this.logger.log(`there are ${this.connectedUsers}`);
+      this.io.emit('users', this.connectedUsers);
     } catch (error) {
       this.logger.warn(`Error getting user from socket: ${error.message}`);
       client.disconnect(true);
     }
-
-    const sockets = this.io.sockets;
-    this.logger.debug(`Number of connected: ${sockets.size}`);
-    this.logger.log(`WS Client with id: ${client.id} connected`);
-    this.logger.log(`there are ${this.connectedUsers}`);
-    this.io.emit('users', this.connectedUsers);
-
-    client.join(client.id);
   }
 
   async handleDisconnect(client: Socket) {
@@ -71,11 +62,7 @@ export class ChatsGateway
       const user = await this.chatsService.getUserFromSocket(client);
       const userPos = this.connectedUsers.indexOf(String(user.id));
       this.connectedUsers = this.connectedUsers.slice(0, userPos);
-
-      //recupérer les ids après les ids de l'utilisateur si l'utilsateur se trouve entre par exemple {  1, 2,3}
       this.connectedUsers = this.connectedUsers.slice(userPos + 1);
-
-      // Sends the new list of connected users
       this.server.emit('users', this.connectedUsers);
     } catch (error) {
       this.logger.warn(`Error getting user from socket: ${error.message}`);
@@ -83,72 +70,46 @@ export class ChatsGateway
     }
   }
 
-  @SubscribeMessage('send_message')
+  @SubscribeMessage('create_chat')
   async handleEvent(
-    @MessageBody()
-    data: {
-      id: string;
-      username: string;
-      to: string;
-      message: string;
-      certified: boolean;
-      location: string;
-      online: boolean;
-      source: string;
-    },
+    @MessageBody() dto: CreateChatsDto,
     @ConnectedSocket() client: Socket,
-  ): Promise<any> {
+  ) {
+    // Authenfication
     const user = await this.chatsService.getUserFromSocket(client);
     const id = client.id;
     const username = user.email;
-
     this.logger.log(`${id} : ${username}`);
-    const message = data.message;
-    const receiver = data.to;
-    const certified = data.certified;
-    const location = data.location;
-    const online = data.online;
-    const source = data.source;
-    this.io.to(receiver).emit('private_message', {
-      id,
-      username,
-      certified,
-      location,
-      online,
-      source,
-      message,
-      receiver,
-    }); // chaque utilisateur est par défaut dans le room portant son propre identifiant
-    return data;
+    const newChat = await this.chatsService.createChat(dto);
+    client.join(newChat.data.name);
+
+    client.broadcast.to(newChat.data.name).emit('chat_created', {
+      ...dto,
+    });
   }
-  @SubscribeMessage('typing')
-  handleTyping(client: Socket) {
-    client.emit('typing', client.handshake.headers.name);
-  }
+
+  // @SubscribeMessage('typing')
+  // handleTyping(client: Socket) {
+  //   client.emit('typing', client.handshake.headers.name);
+  // }
 }
 
-  // @SubscribeMessage('createChat')
-  // create(@MessageBody() createChatDto: CreateChatDto) {
-  //   return this.chatsService.create(createChatDto);
-  // }
+// @SubscribeMessage('findAllChats')
+// findAll() {
+//   return this.chatsService.findAll();
+// }
 
-  // @SubscribeMessage('findAllChats')
-  // findAll() {
-  //   return this.chatsService.findAll();
-  // }
+// @SubscribeMessage('findOneChat')
+// findOne(@MessageBody() id: number) {
+//   return this.chatsService.findOne(id);
+// }
 
-  // @SubscribeMessage('findOneChat')
-  // findOne(@MessageBody() id: number) {
-  //   return this.chatsService.findOne(id);
-  // }
+// @SubscribeMessage('updateChat')
+// update(@MessageBody() updateChatDto: UpdateChatDto) {
+//   return this.chatsService.update(updateChatDto.id, updateChatDto);
+// }
 
-  // @SubscribeMessage('updateChat')
-  // update(@MessageBody() updateChatDto: UpdateChatDto) {
-  //   return this.chatsService.update(updateChatDto.id, updateChatDto);
-  // }
-
-  // @SubscribeMessage('removeChat')
-  // remove(@MessageBody() id: number) {
-  //   return this.chatsService.remove(id);
-  // }
-}
+// @SubscribeMessage('removeChat')
+// remove(@MessageBody() id: number) {
+//   return this.chatsService.remove(id);
+// }
