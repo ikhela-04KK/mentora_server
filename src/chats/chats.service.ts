@@ -1,10 +1,17 @@
-import { ConflictException, Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { WsException } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
 import { AuthService } from 'src/auth/auth.service';
 import { CreateChatsDto } from 'src/dto/chats/dto/create-chats.dto';
 import { PrismaService } from 'src/prisma.service';
 
+// catch (error) {
+//   this.logger.error(error);
+//   return {
+//     statusCode: '400',
+//     message: error,
+//   };
+// }
 @Injectable()
 export class ChatsService {
   private readonly logger = new Logger(ChatsService.name);
@@ -25,6 +32,7 @@ export class ChatsService {
   //   }
   // }
 
+  // implementations du getBy.
   async getChatsByUserId(id: number) {
     try {
       const chats = await this.prisma.chats.findMany({
@@ -64,7 +72,6 @@ export class ChatsService {
       });
 
       const lastMessages = await Promise.all(lastMessagePromise);
-
       return {
         lastMessages,
         chats,
@@ -77,38 +84,34 @@ export class ChatsService {
     }
   }
 
-  async createChat(dto: CreateChatsDto) {
+  async createChat(dto: CreateChatsDto, user_id: number, to: number) {
     //put the dto here
-    try {
-      const chat = await this.prisma.chats.findUnique({
-        where: {
-          id: dto.id,
-          name: dto.name,
+    // try {
+    //   const chat = await this.prisma.chats.findUnique({
+    //     where: {
+    //       id: dto.id,
+    //     },
+    //   });
+    //   if (chat) throw new ConflictException(`chat duplicated in ${dto.name}`);
+    this.logger.log('entrer here');
+    const newChat = await this.prisma.chats.create({
+      data: {
+        name: dto.name,
+        users: {
+          connect: [{ id: user_id }, { id: to }],
         },
-      });
-      if (chat) throw new ConflictException(`chat duplicated in ${dto.name}`);
+      },
+    });
 
-      const newChat = await this.prisma.chats.create({
-        data: {
-          ...dto,
-        },
-      });
-      const { name } = newChat;
-      this.logger.log(`Chat avec le nom ${name} a été créer`);
-
-      return {
-        data: newChat,
-        statusCode: '201',
-        message: 'Chat crée avec succès.',
-      };
-    } catch (error) {
-      this.logger.error(error);
-      return {
-        statusCode: '400',
-        message: error,
-      };
-    }
+    const { id, name } = newChat;
+    this.logger.log(`Chat avec ${id} et ${name} a été créé avec succès`);
+    return {
+      data: newChat,
+      statusCode: '201',
+      message: 'Chat crée avec succès.',
+    };
   }
+
   // async updateChat(){
   //   try {
   //     return {
@@ -186,3 +189,6 @@ export class ChatsService {
   //   return `This action removes a #${id} chat`;
   // }
 }
+
+// creer un chat avec un utilsateur
+// ensuite si un utilisateur se connecte via socket modifié le chat via socket

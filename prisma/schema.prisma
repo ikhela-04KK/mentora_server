@@ -66,7 +66,7 @@ model Status {
 // Define the Chats table
 model Chats {
   id         Int      @id @default(autoincrement())
-  name       String
+  name       String                                 //generer un nom aléatoire 
   created_at DateTime @default(now())
 
   // Define the reference to Messages table

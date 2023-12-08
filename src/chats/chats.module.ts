@@ -6,8 +6,10 @@ import { UserService } from 'src/user/user.service';
 import { PrismaService } from 'src/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { chatsController } from './chats.controller';
+import { MessagesService } from 'src/dto/messages/messages.service';
 
 @Module({
+  // imports: [MessagesService],
   controllers: [chatsController],
   exports: [ChatsService],
   providers: [
@@ -17,6 +19,7 @@ import { chatsController } from './chats.controller';
     UserService,
     PrismaService,
     JwtService,
+    MessagesService,
   ],
 })
 export class ChatsModule {}
