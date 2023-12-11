@@ -1,6 +1,6 @@
 import { UserRole } from '@prisma/client';
 import { Status } from '../../../dto/status/entities/status.entity';
-import { Messages } from '../../../dto/messages/entities/messages.entity';
+import { Messages } from 'src/messages/entities/messages.entity';
 import { Chats } from '../../../dto/chats/entities/chats.entity';
 
 export class User {

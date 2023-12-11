@@ -5,7 +5,7 @@ import {IsInt,IsNotEmpty} from 'class-validator'
 
 
 
-export class ConnectChatsDto {
+export class ConnectMessagesDto {
   @ApiProperty({
   type: 'integer',
   format: 'int32',

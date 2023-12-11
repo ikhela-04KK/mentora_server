@@ -1,24 +1,23 @@
-import {
-  IsDateString,
-  IsInt,
-  IsNotEmpty,
-  IsOptional,
-  IsBoolean,
-} from 'class-validator';
+
+import {ApiProperty} from '@nestjs/swagger'
+
 
 export class StatusDto {
-  @IsNotEmpty()
-  @IsInt()
-  id: number;
-
-  @IsOptional()
-  @IsDateString()
-  connect_at: Date;
-
-  @IsOptional()
-  @IsDateString()
-  disconnect_at: Date;
-
-  @IsBoolean()
-  isOnline: boolean;
+  @ApiProperty({
+  type: 'integer',
+  format: 'int32',
+})
+id: number ;
+@ApiProperty({
+  type: 'string',
+  format: 'date-time',
+})
+connect_at: Date ;
+@ApiProperty({
+  type: 'string',
+  format: 'date-time',
+})
+disconnect_at: Date ;
+@ApiProperty()
+isOnline: boolean ;
 }

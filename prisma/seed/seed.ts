@@ -1,11 +1,12 @@
+/* eslint-disable prettier/prettier */
 // /* eslint-disable prettier/prettier */
 import { PrismaClient } from '@prisma/client';
 // // import { fakeChatsComplete, fakeMessages } from 'prisma/fake-data';
 // // import { fakeChatsComplete, fakeMessages } from 'prisma/fake-data';
-import {
-  fakeChatsComplete,
-  fakeMessages,
-} from 'c:/Users/Administrateur/Documents/mentorat/mentora_server/prisma/fake-data';
+// import {
+//   fakeChatsComplete,
+//   fakeMessages,
+// } from 'c:/Users/Administrateur/Documents/mentorat/mentora_server/prisma/fake-data';
 const prisma = new PrismaClient();
 // //Create user and message
 async function main() {
@@ -47,7 +48,7 @@ async function main() {
   //     })
   // }
   // async function getAllMessage(id: number) {
-  //   await prisma.user.findMany({
+  //   await prisma.user.findMany({:
   //     orderBy: {
   //       name: 'desc',
   //     },
@@ -63,6 +64,54 @@ async function main() {
   //     }
   //   });
   // }
+  // async function getAll() {
+    // const azerty = await prisma.messages.findMany({
+    //   include:{
+    //     user:true,
+    //     chat:true, 
+    //   },
+    //   where: {
+    //     user: {
+    //       id: 9,
+    //     },
+    //   },
+    // });
+    // const azerty = await prisma.user.findMany({
+    //   include:{
+    //     chats:{
+    //       include:{
+    //         users:true
+    //       }
+    //     }
+    //   },
+    //   where:{
+    //     id:9
+    //   }
+    // })
+    const azerty = await prisma.chats.findMany({
+      include:{
+        users:true
+      },
+      where: {
+        users: {
+          some: {
+            id: 9,
+          },
+        },
+      },
+    });
+      console.log(JSON.stringify(azerty))
+
+  }
+
+  // verfication de l'utilisateur a qui on envoie un message s'il son id est dans l'un des chats que je possède si oui ajouter le message de l'emetteur dans la liste de caht existant 
+  //  si ce n'est le cas crée chat 
+
+  // des que je clique sur un contact me conduit directement dans son chat dans le chatBox avec un focus sur ça conversation qu'il soitdans mes contacts 
+  //  ou non  
+
+  // getAll();
+
   // Au clique sur un chat marquer le comme lu
   // si je suis dans un chat qu'un utilsateur envoie un message marquer le directement comme lu
   // si il contient seenAt n'est pas alors retirez le boutton violet et le background
@@ -102,7 +151,7 @@ async function main() {
   // })
   // console.log(JSON.stringify(users))
   // }
-}
+
 main()
   .then(async () => {
     await prisma.$disconnect();

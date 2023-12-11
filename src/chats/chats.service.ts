@@ -4,6 +4,7 @@ import { Socket } from 'socket.io';
 import { AuthService } from 'src/auth/auth.service';
 import { CreateChatsDto } from 'src/dto/chats/dto/create-chats.dto';
 import { PrismaService } from 'src/prisma.service';
+import { CreateChatResponse } from './dto/createChatResponse';
 
 // catch (error) {
 //   this.logger.error(error);
@@ -84,32 +85,41 @@ export class ChatsService {
     }
   }
 
-  async createChat(dto: CreateChatsDto, user_id: number, to: number) {
-    //put the dto here
-    // try {
-    //   const chat = await this.prisma.chats.findUnique({
-    //     where: {
-    //       id: dto.id,
-    //     },
-    //   });
-    //   if (chat) throw new ConflictException(`chat duplicated in ${dto.name}`);
+  async createChat(
+    dto: CreateChatsDto,
+    user_id: number,
+    to: number,
+  ): Promise<CreateChatResponse> {
     this.logger.log('entrer here');
-    const newChat = await this.prisma.chats.create({
-      data: {
-        name: dto.name,
-        users: {
-          connect: [{ id: user_id }, { id: to }],
-        },
+    const data = await this.prisma.chats.findFirst({
+      where: {
+        AND: [{ users: { some: { id: to } } }],
       },
     });
-
-    const { id, name } = newChat;
-    this.logger.log(`Chat avec ${id} et ${name} a été créé avec succès`);
-    return {
-      data: newChat,
-      statusCode: '201',
-      message: 'Chat crée avec succès.',
-    };
+    if (data) {
+      return {
+        data: data,
+        statusCode: '200',
+        message: 'Chat existant trouvé',
+        chat_id: data.id,
+      };
+    } else {
+      const newChat = await this.prisma.chats.create({
+        data: {
+          name: dto.name,
+          users: {
+            connect: [{ id: user_id }, { id: to }],
+          },
+        },
+      });
+      const { id, name } = newChat;
+      this.logger.log(`Chat avec ${id} et ${name} a été créé avec succès`);
+      return {
+        data: newChat,
+        statusCode: '201',
+        message: 'Chat crée avec succès.',
+      };
+    }
   }
 
   // async updateChat(){
