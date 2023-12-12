@@ -1,6 +1,8 @@
+/* eslint-disable prettier/prettier */
 import { Injectable, Logger } from '@nestjs/common';
 import { CreateMessagesDto } from './dto/create-messages.dto';
 import { PrismaService } from 'src/prisma.service';
+import { ConnectMessagesDto } from './dto/connect-messages.dto';
 
 @Injectable()
 export class MessagesService {
@@ -28,4 +30,26 @@ export class MessagesService {
       };
     }
   }
+
+  
+   async getMessagesByChat(dto:ConnectMessagesDto){
+     try{
+      const message = await this.prisma.messages.findMany({
+        where:{
+          chat_id:dto.id
+        }
+      })
+       return {
+         result:message, 
+         statusCode:'200', 
+         message:"La récupération des messages a été effectué avec succès"
+       }
+     }
+     catch(error){
+       return {
+         statusCode:400, 
+         message:error,
+        }
+     }
+   }
 }

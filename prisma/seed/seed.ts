@@ -88,19 +88,28 @@ async function main() {
     //     id:9
     //   }
     // })
-    const azerty = await prisma.chats.findMany({
-      include:{
-        users:true
-      },
-      where: {
-        users: {
-          some: {
-            id: 9,
-          },
-        },
-      },
-    });
-      console.log(JSON.stringify(azerty))
+    // const azerty = await prisma.chats.findMany({
+    //   include:{
+    //     users:true
+    //   },
+    //   where: {
+    //     users: {
+    //       some: {
+    //         id: 9,
+    //       },
+    //     },
+    //   },
+    // });
+    //   console.log(JSON.stringify(azerty))
+
+    const geneba = await prisma.messages.findMany({
+      where:{
+        chat_id:9
+      }
+    })
+    console.log(JSON.stringify(geneba))
+
+
 
   }
 
