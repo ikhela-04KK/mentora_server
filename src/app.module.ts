@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { PrismaService } from './prisma.service';
 import { MulterModule } from '@nestjs/platform-express';
 import { ChatsModule } from './chats/chats.module';
+import { MessageModule } from './messages/messages.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ChatsModule } from './chats/chats.module';
       storage: 'diskStorage',
     }),
     ChatsModule,
+    MessageModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

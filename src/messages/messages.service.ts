@@ -7,7 +7,7 @@ import { ConnectMessagesDto } from './dto/connect-messages.dto';
 @Injectable()
 export class MessagesService {
   private readonly logger = new Logger(MessagesService.name);
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
   async addMessage(dto: CreateMessagesDto) {
     try {
       this.logger.log('entrer here');
@@ -31,25 +31,25 @@ export class MessagesService {
     }
   }
 
-  
-   async getMessagesByChat(dto:ConnectMessagesDto){
-     try{
+
+  async getMessagesByChat(dto: ConnectMessagesDto) {
+    try {
       const message = await this.prisma.messages.findMany({
-        where:{
-          chat_id:dto.id
+        where: {
+          chat_id: dto.id, 
         }
       })
-       return {
-         result:message, 
-         statusCode:'200', 
-         message:"La récupération des messages a été effectué avec succès"
-       }
-     }
-     catch(error){
-       return {
-         statusCode:400, 
-         message:error,
-        }
-     }
-   }
+      return {
+        result: message,
+        statusCode: '200',
+        message: "La récupération des messages a été effectué avec succès"
+      }
+    }
+    catch (error) {
+      return {
+        statusCode: 400,
+        message: error,
+      }
+    }
+  }
 }
