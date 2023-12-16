@@ -1,33 +1,30 @@
 generator client {
   provider = "prisma-client-js"
 }
-// generator custom_generator {
-//     provider = "prisma-generator-fake-data"
-//     // output   = "../types/fake-data.ts"
+
+// generator nestjsDto {
+//   provider                        = "prisma-generator-nestjs-dto"
+//   output                          = "../src/dto/"
+//   outputToNestJsResourceStructure = "true"
+//   flatResourceStructure           = "false"
+//   exportRelationModifierClasses   = "true"
+//   reExport                        = "false"
+//   createDtoPrefix                 = "Create"
+//   updateDtoPrefix                 = "Update"
+//   dtoSuffix                       = "Dto"
+//   entityPrefix                    = ""
+//   entitySuffix                    = ""
+//   classValidation                 = "true"
+//   fileNamingStyle                 = "camel"
+//   noDependencies                  = "false"
+//   outputType                      = "class"
+//   prettier                        = "false"
 // }
-generator nestjsDto {
-  provider                        = "prisma-generator-nestjs-dto"
-  output                          = "../src/dto/"
-  outputToNestJsResourceStructure = "true"
-  flatResourceStructure           = "false"
-  exportRelationModifierClasses   = "true"
-  reExport                        = "false"
-  createDtoPrefix                 = "Create"
-  updateDtoPrefix                 = "Update"
-  dtoSuffix                       = "Dto"
-  entityPrefix                    = ""
-  entitySuffix                    = ""
-  classValidation                 = "true"
-  fileNamingStyle                 = "camel"
-  noDependencies                  = "false"
-  outputType                      = "class"
-  prettier                        = "false"
-}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-
 
 model User {
   id        Int        @id @default(autoincrement())
@@ -36,13 +33,12 @@ model User {
   name      String
   role      UserRole   @default(INVITE)
   avatar    String
-  location  String 
-  createdAt DateTime  @default(now()) @db.Timestamptz(6)
+  location  String
+  createdAt DateTime   @default(now()) @db.Timestamptz(6)
   statuses  Status[]   @relation("userStatus")
   messages  Messages[] @relation("userMessages")
-  // chats   ChatUser[] @relation("userChats")
   chats     Chats[]
-  // Define the reference to Status table
+  likes     Likes[]    @relation("userLikes")
 }
 
 enum UserRole {
@@ -58,42 +54,44 @@ model Status {
   connect_at    DateTime
   disconnect_at DateTime
   user_id       Int
-  // Define the reference to Users table
-  user          User     @relation("userStatus", fields: [user_id], references: [id]) 
+  user          User     @relation("userStatus", fields: [user_id], references: [id])
   isOnline      Boolean  @default(false)
 }
 
 // Define the Chats table
 model Chats {
   id         Int      @id @default(autoincrement())
-  name       String                                 //generer un nom aléatoire 
+  name       String
   created_at DateTime @default(now())
 
-  // Define the reference to Messages table
   Messages Messages[] @relation("chatMessages")
-  // users   ChatUser[]
   users    User[]
 }
 
-
 // Define the Messages table
 model Messages {
-  id           Int       @id @default(autoincrement())
+  id           Int         @id @default(autoincrement())
   content      String
   seen_at      DateTime?
   delivered_at DateTime?
-  created_at   DateTime  @default(now())
-  updated_at   DateTime  @default(now())
+  created_at   DateTime    @default(now())
+  updated_at   DateTime    @default(now())
   user_id      Int
   chat_id      Int
-  // Define the reference to Users table
-  user         User      @relation("userMessages", fields: [user_id], references: [id]) 
-  chat         Chats     @relation("chatMessages", fields: [chat_id], references: [id])
+  user         User        @relation("userMessages", fields: [user_id], references: [id])
+  chat         Chats       @relation("chatMessages", fields: [chat_id], references: [id])
+  like       Likes[]     @relation("messageLikes") 
+
 }
-// model ChatUser {
-//   id     Int    @id @default(autoincrement())
-//   userId Int
-//   chatId Int
-//   user   User   @relation("userChats", fields: [userId], references: [id])
-//   chat   Chats   @relation("chatUsers", fields: [chatId], references: [id])
-// }
+
+model Likes {
+  id         Int        @id @default(autoincrement())
+  reaction String?       
+  message_id Int        
+  user_id    Int
+  message    Messages   @relation("messageLikes", fields: [message_id], references: [id])
+  user       User       @relation("userLikes", fields: [user_id], references: [id])
+  created_at DateTime   @default(now())
+  updated_at   DateTime @default(now())
+
+}
