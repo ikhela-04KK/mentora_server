@@ -102,16 +102,33 @@ async function main() {
     // });
     //   console.log(JSON.stringify(azerty))
 
-    const geneba = await prisma.messages.findMany({
-      where:{
-        chat_id:9
-      }
-    })
+    // const geneba = await prisma.messages.findMany({
+    //   where:{
+    //     chat_id:9
+    //   }
+    // })
+    const geneba = await prisma.user.findMany({
+      orderBy: {
+        name: 'desc',
+      },
+      select: {
+        id: true,
+        name: true,
+        avatar: true,
+        email: true,
+      },
+      // where: {
+      //   id: {
+      //     not: 9,
+      //   },
+      // },
+    });
     console.log(JSON.stringify(geneba))
 
-
-
   }
+
+
+
 
   // verfication de l'utilisateur a qui on envoie un message s'il son id est dans l'un des chats que je possède si oui ajouter le message de l'emetteur dans la liste de caht existant 
   //  si ce n'est le cas crée chat 
