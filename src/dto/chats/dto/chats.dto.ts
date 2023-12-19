@@ -1,10 +1,18 @@
-import { IsDate, IsInt, IsString } from 'class-validator';
+
+import {ApiProperty} from '@nestjs/swagger'
+
 
 export class ChatsDto {
-  @IsInt()
-  id: number;
-  @IsString()
-  name: string;
-  @IsDate()
-  created_at: Date;
+  @ApiProperty({
+  type: 'integer',
+  format: 'int32',
+})
+id: number ;
+@ApiProperty()
+name: string ;
+@ApiProperty({
+  type: 'string',
+  format: 'date-time',
+})
+created_at: Date ;
 }

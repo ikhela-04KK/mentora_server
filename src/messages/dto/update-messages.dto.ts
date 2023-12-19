@@ -1,25 +1,33 @@
 
 import {ApiProperty} from '@nestjs/swagger'
-import {IsDateString,IsOptional} from 'class-validator'
+import {IsDateString,IsOptional,IsString} from 'class-validator'
 
 
 
 
-export class UpdateStatusDto {
+export class UpdateMessagesDto {
   @ApiProperty({
-  type: 'string',
-  format: 'date-time',
   required: false,
 })
 @IsOptional()
-@IsDateString()
-connect_at?: Date ;
+@IsString()
+content?: string ;
 @ApiProperty({
   type: 'string',
   format: 'date-time',
   required: false,
+  nullable: true,
 })
 @IsOptional()
 @IsDateString()
-disconnect_at?: Date ;
+seen_at?: Date  | null;
+@ApiProperty({
+  type: 'string',
+  format: 'date-time',
+  required: false,
+  nullable: true,
+})
+@IsOptional()
+@IsDateString()
+delivered_at?: Date  | null;
 }

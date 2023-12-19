@@ -6,7 +6,7 @@ import { UserService } from 'src/user/user.service';
 import { PrismaService } from 'src/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { chatsController } from './chats.controller';
-import { MessagesService } from 'src/dto/messages/messages.service';
+import { MessagesService } from 'src/messages/messages.service';
 
 @Module({
   // imports: [MessagesService],
