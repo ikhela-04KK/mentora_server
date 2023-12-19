@@ -51,6 +51,26 @@ export class UserService {
       },
     });
   }
+
+  // display all users without me or without this id
+  async findMany(id: number) {
+    return await this.prisma.user.findMany({
+      orderBy: {
+        name: 'desc',
+      },
+      select: {
+        id: true,
+        name: true,
+        avatar: true,
+        email: true,
+      },
+      where: {
+        id: {
+          not: id,
+        },
+      },
+    });
+  }
 }
 
 // lors du process il garde les 1er dans le state puis passe à l'autre route qui selection-role puis ajouter les informations du nouveaux form contenant le role et l'image dans le form generere 1erment par la route register ensuite il si tout ces biens passés il envoie ces informations à la base de donnée

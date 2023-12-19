@@ -4,6 +4,8 @@ import { loginDto } from './dto/auth.dto';
 import { compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 
+const EXPIRE_TIME = 30 * 60 * 1000;
+
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
@@ -31,6 +33,7 @@ export class AuthService {
           expiresIn: '7d',
           secret: process.env.jwtRefreshTokenKey,
         }),
+        expiresIn: new Date().setTime(new Date().getTime() + EXPIRE_TIME), // date d'expiration +30 min à chaque que le refresh token est activé
       },
     };
   }
@@ -54,28 +57,38 @@ export class AuthService {
     return {
       backendToken: {
         accessToken: await this.jwtService.signAsync(payload, {
-          expiresIn: '30m',
+          expiresIn: '100m',
           secret: process.env.jwtSecretKey,
         }),
         refreshToken: await this.jwtService.signAsync(payload, {
-          expiresIn: '7d',
+          expiresIn: '10d',
           secret: process.env.jwtRefreshTokenKey,
         }),
+        expiresIn: new Date().setTime(new Date().getTime() + EXPIRE_TIME),
       },
     };
   }
+
   async getUserFromAuthenticationToken(token: string) {
-    this.logger.log(
-      'Beginning the authentification with extracted bearer token',
-    );
-    const payload = this.jwtService.verify(token, {
-      secret: process.env.jwtSecretKey,
-    });
-    console.log(payload);
-    const username = payload.username;
-    if (username) {
-      this.logger.log('Succefully authorizing client conncetions');
-      return this.userService.findByEmail(username);
+    try {
+      this.logger.log(
+        'Beginning the authentification with extracted bearer token',
+      );
+      this.logger.log(`token user: ${token}`);
+      console.log(500 + 200);
+      // handle jwt tokent malformed
+      const payload = this.jwtService.verify(token, {
+        secret: process.env.jwtSecretKey,
+      });
+      console.log(payload);
+      const username = payload.username;
+      if (username) {
+        this.logger.log('Succefully authorizing client conncetions');
+        return this.userService.findByEmail(username);
+      }
+    } catch (error) {
+      this.logger.error(`JWT TOKEN MALFORMED ${error.message}`);
+      return null;
     }
   }
 }

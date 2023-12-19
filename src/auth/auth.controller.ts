@@ -27,7 +27,8 @@ export class AuthController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: './files',
+        destination:
+          'C:\\Users\\Administrateur\\Documents\\mentorat\\mentorat_front\\public',
         filename: editFilname,
       }),
       fileFilter: imageFileFilter,
@@ -59,6 +60,7 @@ export class AuthController {
   @UseGuards(refreshJwtGuard)
   @Post('refresh')
   async refreshToken(@Request() req) {
+    console.log('refreshed');
     return await this.authService.refreshToken(req.user);
   }
 }

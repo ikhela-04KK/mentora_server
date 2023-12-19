@@ -1,0 +1,72 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table User {
+  id Int [pk, increment]
+  email String [unique, not null]
+  password String [not null]
+  name String [not null]
+  role UserRole [not null, default: 'INVITE']
+  avatar String [not null]
+  location String
+  createdAt DateTime [default: `now()`]
+  statuses Status [not null]
+  messages Messages [not null]
+  chats ChatUser [not null]
+}
+
+Table Status {
+  id Int [pk, increment]
+  connect_at DateTime [not null]
+  disconnect_at DateTime [not null]
+  user_id Int [not null]
+  user User [not null]
+  isOnline Boolean [not null, default: false]
+}
+
+Table Chats {
+  id Int [pk, increment]
+  name String [not null]
+  created_at DateTime [default: `now()`, not null]
+  Messages Messages [not null]
+  users ChatUser [not null]
+}
+
+Table Messages {
+  id Int [pk, increment]
+  content String [not null]
+  seen_at DateTime
+  delivered_at DateTime
+  created_at DateTime [default: `now()`, not null]
+  updated_at DateTime [default: `now()`, not null]
+  user_id Int [not null]
+  chat_id Int [not null]
+  user User [not null]
+  chat Chats [not null]
+}
+
+Table ChatUser {
+  id Int [pk, increment]
+  userId Int [not null]
+  chatId Int [not null]
+  user User [not null]
+  chat Chats [not null]
+}
+
+Enum UserRole {
+  ADMIN
+  INVITE
+  TEACHER
+  STUDENT
+}
+
+Ref: Status.user_id > User.id
+
+Ref: Messages.user_id > User.id
+
+Ref: Messages.chat_id > Chats.id
+
+Ref: ChatUser.userId > User.id
+
+Ref: ChatUser.chatId > Chats.id
