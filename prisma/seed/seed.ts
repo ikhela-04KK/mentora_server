@@ -1,11 +1,11 @@
 // /* eslint-disable prettier/prettier */
 import { PrismaClient } from '@prisma/client';
+// import { fakeChatsComplete, fakeMessages } from 'prisma/fake-data';
 // // import { fakeChatsComplete, fakeMessages } from 'prisma/fake-data';
-// // import { fakeChatsComplete, fakeMessages } from 'prisma/fake-data';
-import {
-  fakeChatsComplete,
-  fakeMessages,
-} from 'c:/Users/Administrateur/Documents/mentorat/mentora_server/prisma/fake-data';
+// import {
+//   fakeChatsComplete,
+//   fakeMessages,
+// } from 'c:/Users/Administrateur/Documents/mentorat/mentora_server/prisma/fake-data';
 const prisma = new PrismaClient();
 // //Create user and message
 async function main() {
