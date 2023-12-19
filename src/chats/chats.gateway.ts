@@ -102,4 +102,13 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
         ...data,
       });
   }
+
+  @SubscribeMessage('typing')
+  async typing(
+    @MessageBody() data: { chatId: number; userId: number; isTyping: boolean },
+    @ConnectedSocket() client: Socket,
+  ) {
+    // client.broadcast.emit('typing', { isTyping });
+    client.broadcast.to(String(client.id)).emit('typing', data.isTyping);
+  }
 }
