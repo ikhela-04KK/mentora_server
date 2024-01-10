@@ -8,7 +8,7 @@ export type connectUsers = {
 export interface ChatMessagerie {
     chat_id: number;
     user_id: number;
-    content: string;
+    content: string | "";
     username:string; 
     online?:boolean; 
     source?:string;
@@ -17,5 +17,6 @@ export interface ChatMessagerie {
     id?: number;
     seen_at?: string | null ;
     updated_at?: string;
+    typing?:boolean;
 }
 export type ChatResult = ChatMessagerie[];
