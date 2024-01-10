@@ -1,4 +1,4 @@
-import {
+import {  
   WebSocketGateway,
   OnGatewayConnection,
   OnGatewayDisconnect,
@@ -101,5 +101,25 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       .emit('receive-message', {
         ...data,
       });
+  }
+
+  //
+  @SubscribeMessage('typing')
+  async typing(
+    @MessageBody()
+    data: {
+      chat_id: number;
+      user_name: string;
+      isTyping: boolean;
+      source: string;
+    },
+    @ConnectedSocket() client: Socket,
+  ) {
+    this.logger.debug(data);
+    this.logger.debug(
+      `username ${data.chat_id} in ${data.user_name} typing.....`,
+    );
+    // client.join(String(data.chat_id));
+    client.broadcast.emit('typing', data);
   }
 }

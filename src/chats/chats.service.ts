@@ -27,7 +27,7 @@ export class ChatsService {
   //   }
   //   catch{
   //     return {
-  //       statusCode:'404',
+  //       statusCode:'404',   
   //       message: 'Chat n`existe pas.',
   //     }
   //   }
@@ -64,9 +64,9 @@ export class ChatsService {
         return this.prisma.messages.findMany({
           where: {
             chat_id: chat.id,
-            // NOT: {
-            //   user_id: id,
-            // },
+            NOT: {
+              user_id: id,
+            },
           },
           orderBy: { created_at: 'desc' },
         });

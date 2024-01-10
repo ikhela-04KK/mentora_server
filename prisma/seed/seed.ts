@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 // /* eslint-disable prettier/prettier */
 import { PrismaClient } from '@prisma/client';
+// import { fakeChatsComplete, fakeMessages } from 'prisma/fake-data';
 // // import { fakeChatsComplete, fakeMessages } from 'prisma/fake-data';
 // // import { fakeChatsComplete, fakeMessages } from 'prisma/fake-data';
 // import {
