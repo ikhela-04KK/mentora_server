@@ -3,6 +3,8 @@ import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as cors from 'cors';
+
+declare const module: any;
 // pipe de validation intégré à nest js qui fonctionne avec class-validator et class-transformer
 
 // pour suivre les exeption
@@ -50,5 +52,10 @@ async function bootstrap() {
   const url = `http://localhost:8000`;
   logger.log(`API Document available at ${url}`);
   await app.listen(8000);
+
+  if (module.hot) {
+    module.hot.accept();
+    module.hot.dispose(() => app.close());
+  }
 }
 bootstrap();
