@@ -23,7 +23,6 @@ import { CacheModule } from '@nestjs/cache-manager';
       dest: './files',
       storage: 'diskStorage',
     }),
-   
     ChatsModule,
     MessageModule,
   ],
